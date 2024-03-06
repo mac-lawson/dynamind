@@ -12,8 +12,7 @@ defmodule EECOM do
   def sysmemory do
     Application.ensure_all_started(:os_mon)
     :memsup.get_system_memory_data
-  end
-  
+  end 
   @spec totalmemory() :: String.t()
   def totalmemory do
     :memsup.get_memory_data()
