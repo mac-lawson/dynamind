@@ -8,13 +8,14 @@ defmodule EECOM do
     :erlang.system_info(:system_architecture)
   end
 
-  def free_memory do
+  @spec sysmemory() :: String.t()
+  def sysmemory do
     Application.ensure_all_started(:os_mon)
     :memsup.get_system_memory_data
   end
-
-  @spec network_connections() :: [Map.t()]
-  def network_connections do
-    :inet.i4_list_connections()
+  
+  @spec totalmemory() :: String.t()
+  def totalmemory do
+    :memsup.get_memory_data()
   end
 end
