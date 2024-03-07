@@ -35,5 +35,5 @@ defmodule Dynamind do
   """
   def runic() do
     StartImageClassification.run()
-  end 
+  end
 end

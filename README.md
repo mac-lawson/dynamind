@@ -1,12 +1,12 @@
 ```
 +---------------------------------------------------+
-|                      Web Server                   |
+|                      Application                  |
 +---------------------------------------------------+
                           |
-                    Dataset Server
+                    OTP Node
                           |
 +------------------------------------------------------------------------------+
-|       Computer 1    <-Comms->       Computer 2        <-Comms->     Computer3
+|       Computer 1             Computer 2                         Computer3
 +------------------------------------------------------------------------------+
 |      Agent 1        |             Agent 2             |           Agent 3
 |       /  |  \        |            /  |  \             |          /  |  \
@@ -15,16 +15,13 @@
 
 ```
 
-# Distributed Cognitive Agents with Elixir
+# Dynamind: Distributed Machine Learning
 
 This project aims to develop a distributed cognitive agent system using Elixir, capable of dynamic resource allocation in complex environments.
 
 ## Overview
-The system consists of several key components:
-- Agents: Modular units capable of perception, decision-making, and action execution.
-- Environment: Module for modeling the environment and capturing relevant data.
-- Decision: Algorithms for intelligent decision-making and resource allocation.
-- Communication: Mechanisms for distributed communication and coordination among agents.
+Dynamind uses Erlang and Elixir to empower distributed computing for machine learning models and applications/users relying on them.  
+
 
 ## Getting Started
 1. Clone this repository.

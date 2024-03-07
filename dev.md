@@ -15,6 +15,7 @@
 - QA test for Node spawning
 - [subtask] Add module to seperate raw Bumblebee into different functions based of computational need.
 - Database
+- Custom integration for Axon (need to figure out any Mix issues with that)
 
 ### Future todos 
 - GraphQL
