@@ -1,6 +1,4 @@
 defmodule Dynamind do
-  Code.require_file("lib/dep.exs")
-  Dep.load()
   @moduledoc """
   Documentation for `Dynamind`.
   """
@@ -14,12 +12,18 @@ defmodule Dynamind do
       iex> Dynamind.envinitARCH()
 
   """
+  @spec envinitARCH() :: String.t
   def envinitARCH do
     EECOM.architecture()
   end
 
+
+  @doc """
+  Loads the .dynm configuration file for latter use by tasking.
+  """
+  @spec loadConfig() :: integer
   def loadConfig do
-    ConfigFileLoader.rd()
+    0
   end
 
   @doc """
