@@ -39,4 +39,3 @@ defmodule DynaMind.Logger do
     IO.puts("#{timestamp} [#{severity}] #{message}")
   end
 end
-

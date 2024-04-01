@@ -6,7 +6,6 @@ Application.put_env(:sample, PhoenixDemo.Endpoint,
   pubsub_server: PhoenixDemo.PubSub
 )
 
-
 Application.put_env(:nx, :default_backend, EXLA.Backend)
 
 defmodule PhoenixDemo.Layouts do
@@ -315,37 +314,33 @@ end
 # Application startup fuctions go here
 
 defmodule StartImageClassification_Example do
-@moduledoc """
-StartImageClassification_Example
-    ##Examples
-    iex> StartImageClassification_Example.run()
-"""
+  @moduledoc """
+  StartImageClassification_Example
+      ##Examples
+      iex> StartImageClassification_Example.run()
+  """
 
   def run do
-   {:ok, model_info} = Bumblebee.load_model({:hf, "microsoft/resnet-50"})
-   {:ok, featurizer} = Bumblebee.load_featurizer({:hf, "microsoft/resnet-50"})
+    {:ok, model_info} = Bumblebee.load_model({:hf, "microsoft/resnet-50"})
+    {:ok, featurizer} = Bumblebee.load_featurizer({:hf, "microsoft/resnet-50"})
 
-   serving =
-     Bumblebee.Vision.image_classification(model_info, featurizer,
-      top_k: 1,
-      compile: [batch_size: 4],
-      defn_options: [compiler: EXLA]
-    )
+    serving =
+      Bumblebee.Vision.image_classification(model_info, featurizer,
+        top_k: 1,
+        compile: [batch_size: 4],
+        defn_options: [compiler: EXLA]
+      )
 
-   {:ok, _} =
-     Supervisor.start_link(
-      [
-        {Phoenix.PubSub, name: PhoenixDemo.PubSub},
-        {Nx.Serving, serving: serving, name: PhoenixDemo.Serving, batch_timeout: 100},
-        PhoenixDemo.Endpoint
-        
-    ],
-    strategy: :one_for_one
-  )
+    {:ok, _} =
+      Supervisor.start_link(
+        [
+          {Phoenix.PubSub, name: PhoenixDemo.PubSub},
+          {Nx.Serving, serving: serving, name: PhoenixDemo.Serving, batch_timeout: 100},
+          PhoenixDemo.Endpoint
+        ],
+        strategy: :one_for_one
+      )
 
     Process.sleep(:infinity)
- 
   end
-  
 end
-

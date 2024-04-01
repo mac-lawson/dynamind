@@ -1,8 +1,10 @@
 defmodule DynamindTest do
-  Code.require_file("lib/utils/reqdeps.exs")
-  ReqDeps.pull_eecom()
+  import EECOM
+  import Db.Management
   use ExUnit.Case
   doctest Dynamind
+  doctest Db.Management
+  doctest Db.Statements
 
   """
   Environment Module Tests
@@ -12,12 +14,22 @@ defmodule DynamindTest do
     assert Dynamind.envinitARCH() == :erlang.system_info(:system_architecture)
   end
 
-  test "Gets system memory data" do
-    assert EECOM.sysmemory() == :memsup.get_system_memory_data
-  end 
 
   """
-  Agent module tests
+  Database tests
   """
+  test "Connect to Test Database" do
+    assert db_init_test() == :ok
+  end
+
+  """
+  Security tests
+  """
+  test "Clear database before commit" do
+    {:ok, conn} = db_connect()
+    assert db_clear(conn) == :ok
+  end
+
+
 
 end

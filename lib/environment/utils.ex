@@ -4,13 +4,12 @@ defmodule EnvironmentUtils do
     Performs utility calculations for the environment main module file.
   """
   import EECOM
+  import ByteConverter
 
   @doc """
-
+  Returns the amount of free memory in the system in MB.
   """
-  def memory_free do
-    sysmemory()[:free_memory] / sysmemory()[:total_memory]
-
-    EECOM.__info__()
+  def memory_freeMB do
+    to_megabytes(sysmemory()[:available_memory])
   end
 end

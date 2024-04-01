@@ -4,20 +4,16 @@ defmodule Tasking do
     The tasking module gives a score to required functions and actions to ensure proper distibution of functions across nodes.
 
   """
-  import EECOM
   import EnvironmentUtils
+  import Db.Management
+  import Db.Utils
 
-
-  defp intake do
+  def intake do
+    {:ok, conn} = db_connect()
     for remote_host <- ConfigFileToArray.read_default_config() do
-
+      # :mem = memory_freeMB()
+      insert(conn, remote_host, 0, 0)
     end
+  end
 
-  end
-  @spec doesSystemHaveSpace() :: none()
-  def doesSystemHaveSpace do
-   if EnvironmentUtils.memory_free() > 100 do
-      1
-   end
-  end
 end

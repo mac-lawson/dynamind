@@ -3,7 +3,6 @@ defmodule Dynamind do
   Documentation for `Dynamind`.
   """
 
-
   @doc """
   Gathers information about system's architecture for EECOM
 
@@ -12,11 +11,10 @@ defmodule Dynamind do
       iex> Dynamind.envinitARCH()
 
   """
-  @spec envinitARCH() :: String.t
+  @spec envinitARCH() :: String.t()
   def envinitARCH do
     EECOM.architecture()
   end
-
 
   @doc """
   Loads the .dynm configuration file for latter use by tasking.
@@ -31,7 +29,6 @@ defmodule Dynamind do
   """
   def pubApiServer() do
     DynamindAPIServer.start(8000)
-    
   end
 
   @doc """

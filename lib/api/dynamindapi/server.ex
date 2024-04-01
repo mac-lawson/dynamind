@@ -24,6 +24,7 @@ defmodule DynamindAPIServer do
     case :gen_tcp.recv(socket, 0) do
       {:ok, request} ->
         handle_http_request(request, socket)
+
       {:error, _reason} ->
         :ok
     end
@@ -31,14 +32,17 @@ defmodule DynamindAPIServer do
 
   defp handle_http_request(request, socket) do
     data = get_state()
+
     case String.split(request, " ") do
       ["GET", path, _] ->
         response = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\n#{data}\r\n"
         :gen_tcp.send(socket, response)
+
       _ ->
         response = "HTTP/1.1 400 Bad Request\r\n\r\n"
         :gen_tcp.send(socket, response)
     end
+
     :gen_tcp.close(socket)
   end
 end
