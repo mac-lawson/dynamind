@@ -20,7 +20,7 @@ defmodule DynaMind.Logger do
   @doc """
   Log a warning message.
   """
-  def warn(message) do
+  def warning(message) do
     log("WARNING", message)
   end
 
@@ -34,7 +34,7 @@ defmodule DynaMind.Logger do
   @doc """
   Log a message with the specified severity level.
   """
-  defp log(severity, message) do
+  def log(severity, message) do
     timestamp = DateTime.utc_now() |> DateTime.to_iso8601()
     IO.puts("#{timestamp} [#{severity}] #{message}")
   end

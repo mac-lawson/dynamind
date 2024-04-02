@@ -24,4 +24,18 @@ defmodule Db.Utils do
     {:ok, statement} = Exqlite.Sqlite3.prepare(conn, @pull_all_query)
     Exqlite.Sqlite3.step(conn, statement)
   end
+
+  @spec update_uptime(reference(), any(), any()) :: :done
+  def update_uptime(conn, id, uptime) do
+    {:ok, statement} = set_uptime_statement(conn)
+    Exqlite.Sqlite3.bind(conn, statement, [uptime, id])
+    Exqlite.Sqlite3.step(conn, statement)
+  end
+
+  @spec get_uptime(reference(), any()) :: {:row, list()}
+  def get_uptime(conn, id) do
+    {:ok, statement} = get_uptime_statement(conn)
+    :ok = Exqlite.Sqlite3.bind(conn, statement, [id])
+    {:row, _data} = Exqlite.Sqlite3.step(conn, statement)
+  end
 end
