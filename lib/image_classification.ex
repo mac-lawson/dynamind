@@ -6,6 +6,19 @@ Application.put_env(:sample, PhoenixDemo.Endpoint,
   pubsub_server: PhoenixDemo.PubSub
 )
 
+# If not running a Mix program, you need to uncomment the following lines
+
+#Mix.install([
+#  {:plug_cowboy, "~> 2.6"},
+#  {:jason, "~> 1.4"},
+#  {:phoenix, "1.7.10"},
+#  {:phoenix_live_view, "0.20.1"},
+#  # Bumblebee and friends
+#  {:bumblebee, "~> 0.5.0"},
+#  {:nx, "~> 0.7.0"},
+#  {:exla, "~> 0.7.0"}
+#])
+
 Application.put_env(:nx, :default_backend, EXLA.Backend)
 
 defmodule PhoenixDemo.Layouts do
@@ -184,8 +197,12 @@ defmodule PhoenixDemo.SampleLive do
 
   @impl true
   def render(assigns) do
+    _nodes_conn = 4
     ~H"""
-    <div class="h-screen w-screen flex items-center justify-center antialiased">
+        <div class="h-screen w-screen flex items-center justify-center antialiased">
+      <h1 class="text-4xl font-bold text-gray-900">Dynamind</h1>
+    <br>
+      <p> running with <code>#4</code> nodes connected</p>
       <div class="flex flex-col items-center w-1/2">
         <form class="m-0 flex flex-col items-center space-y-2" phx-change="noop" phx-submit="noop">
           <.image_input id="image" upload={@uploads.image} height={224} width={224} />
@@ -311,36 +328,31 @@ defmodule PhoenixDemo.Endpoint do
   plug(PhoenixDemo.Router)
 end
 
-# Application startup fuctions go here
+#Application startup
+defmodule ImageClassification do
 
-defmodule StartImageClassification_Example do
-  @moduledoc """
-  StartImageClassification_Example
-      ##Examples
-      iex> StartImageClassification_Example.run()
-  """
+def start do
 
-  def run do
-    {:ok, model_info} = Bumblebee.load_model({:hf, "microsoft/resnet-50"})
-    {:ok, featurizer} = Bumblebee.load_featurizer({:hf, "microsoft/resnet-50"})
+{:ok, model_info} = Bumblebee.load_model({:hf, "microsoft/resnet-50"})
+{:ok, featurizer} = Bumblebee.load_featurizer({:hf, "microsoft/resnet-50"})
 
-    serving =
-      Bumblebee.Vision.image_classification(model_info, featurizer,
-        top_k: 1,
-        compile: [batch_size: 4],
-        defn_options: [compiler: EXLA]
-      )
+serving =
+  Bumblebee.Vision.image_classification(model_info, featurizer,
+    top_k: 1,
+    compile: [batch_size: 4],
+    defn_options: [compiler: EXLA]
+  )
 
-    {:ok, _} =
-      Supervisor.start_link(
-        [
-          {Phoenix.PubSub, name: PhoenixDemo.PubSub},
-          {Nx.Serving, serving: serving, name: PhoenixDemo.Serving, batch_timeout: 100},
-          PhoenixDemo.Endpoint
-        ],
-        strategy: :one_for_one
-      )
+{:ok, _} =
+  Supervisor.start_link(
+    [
+      {Phoenix.PubSub, name: PhoenixDemo.PubSub},
+      {Nx.Serving, serving: serving, name: PhoenixDemo.Serving, batch_timeout: 100},
+      PhoenixDemo.Endpoint
+    ],
+    strategy: :one_for_one
+  )
 
-    Process.sleep(:infinity)
-  end
+Process.sleep(:infinity)
+end
 end

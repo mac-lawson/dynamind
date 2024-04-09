@@ -14,10 +14,10 @@ defmodule DynamindTest do
     assert Dynamind.envinitARCH() == :erlang.system_info(:system_architecture)
   end
 
-
   """
   Database tests
   """
+
   test "Connect to Test Database" do
     assert db_init_test() == :ok
   end
@@ -25,11 +25,9 @@ defmodule DynamindTest do
   """
   Security tests
   """
+
   test "Clear database before commit" do
     {:ok, conn} = db_connect()
     assert db_clear(conn) == :ok
   end
-
-
-
 end

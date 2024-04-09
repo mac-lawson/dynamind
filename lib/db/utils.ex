@@ -1,14 +1,21 @@
 defmodule Db.Utils do
-
   @pull_all_query "SELECT * FROM hosts;"
 
   import Db.Statements
 
-  
   @spec insert(reference(), any(), any(), any()) :: :done
   def insert(conn, id, memory, stage_number) do
     {:ok, statement} = new_node_statement(conn)
-    :ok = Exqlite.Sqlite3.bind(conn, statement, [id, memory, stage_number, List.to_string(:erlang.ref_to_list(conn))])
+
+    :ok =
+      Exqlite.Sqlite3.bind(conn, statement, [
+        id,
+        memory,
+        stage_number,
+        Node.connect(id),
+        Node.ping(id)
+      ])
+
     :done = Exqlite.Sqlite3.step(conn, statement)
   end
 

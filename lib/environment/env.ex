@@ -3,7 +3,7 @@ defmodule EECOM do
   EECOM (named for the NASA mission controller position) sets up and recognizes the local and remote systems' environment
   """
 
-  @spec architecture() :: char_list()
+  @spec architecture() :: charlist()
   def architecture do
     :erlang.system_info(:system_architecture)
   end

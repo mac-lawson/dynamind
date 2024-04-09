@@ -35,6 +35,6 @@ defmodule Dynamind do
   Runs the *centralized* image classification example. 
   """
   def runic() do
-    StartImageClassification.run()
+    #StartImageClassification.run()
   end
 end

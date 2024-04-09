@@ -12,4 +12,17 @@ defmodule EnvironmentUtils do
   def memory_freeMB do
     to_megabytes(sysmemory()[:available_memory])
   end
+
+  @spec is_workspec(atom()) :: boolean
+  def is_workspec(func) do
+    case func do
+      :one -> true
+      :two -> true
+      :three -> true
+      :four -> true
+      :five -> true
+      _ -> false
+    end
+  end
+
 end

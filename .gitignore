@@ -24,3 +24,12 @@ dynamind-*.tar
 
 # Temporary files, for example, from tests.
 /tmp/
+
+
+# Added by cargo
+
+/target
+/debug
+Cargo.lock
+**/*.rs.bk
+*.pdb

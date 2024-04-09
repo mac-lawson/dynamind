@@ -3,7 +3,8 @@ defmodule Agent.Monitor do
   Agent.Monitor
     The Agent.Monitor module is responsible for monitoring the agents registered in the database.
   """
-  #import Db.Utils
+
+  # import Db.Utils
 
   @spec monitor(reference()) :: :ok
   def monitor(conn) do
@@ -23,6 +24,7 @@ defmodule Agent.Monitor do
   @spec is_node_alive(any()) :: boolean()
   def is_node_alive(id) do
     {result} = ping_node(id)
+
     if result == :pong do
       true
     else

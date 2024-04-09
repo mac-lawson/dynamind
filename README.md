@@ -29,6 +29,10 @@ Dynamind uses Erlang and Elixir to empower distributed computing for machine lea
 3. Navigate to the project directory and run `mix deps.get` to install dependencies.
 4. Follow the instructions in each directory's README to understand and contribute to the project.
 
+## Managing your Elixir Installation
+Your system and ALL NODES must be running the same version of Elixir. Most of this project's dependencies require Elixir .11 or higher, and running multiple clusters with different versions of Elixir will cause issues.
+
+
 ## Usage
 TODO: Add usage instructions once the system is developed.
 

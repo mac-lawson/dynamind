@@ -34,7 +34,7 @@ defmodule DynamindAPIServer do
     data = get_state()
 
     case String.split(request, " ") do
-      ["GET", path, _] ->
+      ["GET", _path, _] ->
         response = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\n#{data}\r\n"
         :gen_tcp.send(socket, response)
 

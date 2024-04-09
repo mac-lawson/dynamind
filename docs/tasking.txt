@@ -1,0 +1,37 @@
+============
+TASKING
+============
+
+
+Chapters
+---------
+1. What is a Task?
+2. Identifying Task Memory Requirements
+3. Atom Identifiers
+
+
+
+======
+ONE
+======
+A task is a unit of work that is performed by a node. It is a function of the total model that is designated for Dynamind to process and distribute.
+
+
+======
+TWO
+======
+
+Computational requirements are defined by the developer. For example, a function MUST return a tuple of the form {x, y, z} where x and y are integers and z is an atom. The integers x and y are the dimensions of the tensor that is returned by the function. The atom z is the identifier for the task. The atom z is used to identify the task requirements for the function inside of the model.
+
+defmodule SampleModels.Tensor do
+
+  @spec make_a_tensor() :: {any(), any(), any()}
+  def make_a_tensor do
+    t = Nx.tensor([[1, 2], [3, 4]])
+    {x, y} = Nx.shape(t)
+    {x, y, :one}
+  end
+end
+
+
+

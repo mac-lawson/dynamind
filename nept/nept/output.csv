@@ -1,0 +1,38 @@
+
+    ,<ModelName>ExampleClassifier</ModelName>,ExampleClassifier,
+    ,<ModelType>Classification</ModelType>,Classification,
+    ,<Description>This is a machine learning model trained for classifying text documents into predefined categories.</Description>,This is a machine learning model trained for classifying text documents into predefined categories.,
+    ,<Author>John Doe</Author>,John Doe,
+    ,<CreationDate>2024-04-09</CreationDate>,2024-04-09,
+    ,<Framework>TensorFlow</Framework>,TensorFlow,
+    ,<FrameworkVersion>2.7.0</FrameworkVersion>,2.7.0,
+    ,<InputFeatures>
+        <Feature>Name</Feature>
+        <Feature>Description</Feature>
+    </InputFeatures>,
+        ,<Feature>Name</Feature>,Name,
+        ,<Feature>Description</Feature>,Description,
+    ,
+    ,<OutputClasses>
+        <Class>Category A</Class>
+        <Class>Category B</Class>
+        <Class>Category C</Class>
+    </OutputClasses>,
+        ,<Class>Category A</Class>,Category A,
+        ,<Class>Category B</Class>,Category B,
+        ,<Class>Category C</Class>,Category C,
+    ,
+    ,<PerformanceMetrics>
+        <Metric>Type</Metric>
+        <Metric>Accuracy</Metric>
+        <Metric>Precision</Metric>
+        <Metric>Recall</Metric>
+        <Metric>F1 Score</Metric>
+    </PerformanceMetrics>,
+        ,<Metric>Type</Metric>,Type,
+        ,<Metric>Accuracy</Metric>,Accuracy,
+        ,<Metric>Precision</Metric>,Precision,
+        ,<Metric>Recall</Metric>,Recall,
+        ,<Metric>F1 Score</Metric>,F1 Score,
+    ,
+

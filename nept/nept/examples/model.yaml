@@ -1,0 +1,28 @@
+model_info:
+  name: "Sample Model"
+  version: "1.0"
+  description: "A sample machine learning model for demonstration purposes"
+
+parameters:
+  input_features:
+    - "feature_1"
+    - "feature_2"
+    - "feature_3"
+  output_features:
+    - "target_variable"
+
+hyperparameters:
+  algorithm: "Random Forest"
+  n_estimators: 100
+  max_depth: 5
+  min_samples_split: 2
+  min_samples_leaf: 1
+
+training:
+  dataset_path: "/path/to/training_data.csv"
+  test_size: 0.2
+  random_state: 42
+
+evaluation:
+  metrics: ["accuracy", "precision", "recall", "f1-score"]
+
