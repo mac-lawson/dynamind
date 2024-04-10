@@ -70,7 +70,7 @@ defp function_db_std_setup(conn, module) do
   table_name = String.replace(to_string(module), ".", "_")
   sql_query = """
     CREATE TABLE IF NOT EXISTS #{table_name} (
-      work_reqs INT,
+      work_reqs VARCHAR(255),
       memory VARCHAR(255),
       stage_number INT,
       reference VARCHAR(255),

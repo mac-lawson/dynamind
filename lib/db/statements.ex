@@ -34,8 +34,9 @@ defmodule Db.Statements do
   end
   
   @doc false
-  def create_module_query(conn, module) do
-    Exqlite.Sqlite3.bind(conn, @insert_query_module, [module])
+  @spec create_module_query(reference()) :: {:ok, reference()}
+  def create_module_query(conn) do
+    Exqlite.Sqlite3.prepare(conn, @insert_query_module)
   end
   
 end

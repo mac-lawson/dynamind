@@ -74,5 +74,9 @@ def process_module_silent(module) do
 end
 
 
+def full_process(module) do
+  work_requirements = process_module(module)
+  insert_module_data(work_requirements, "0", 0, module, 0, process_module_silent(module), module)
+end
 
 end
