@@ -31,9 +31,9 @@ Options:
     end
   end
 
-  @spec db_clear(reference()) :: :ok
-  def db_clear(conn) do
-    clear_db(conn)
+  @spec db_clear(reference(), integer()) :: :ok
+  def db_clear(conn, type_db) do
+    clear_db(conn, type_db)
   end
 
   @spec db_init_test() :: :ok
@@ -89,8 +89,17 @@ defp function_db_std_setup(conn, module) do
 end
 
 
-  defp clear_db(conn) do
-    :ok = Exqlite.Sqlite3.execute(conn, "DELETE FROM hosts;")
-    :ok
+  defp clear_db(conn, type_db) do
+    function_db_clear_query = """
+      PRAGMA writable_schema = 1;
+      DELETE FROM sqlite_master WHERE type='table' OR type='index';
+      PRAGMA writable_schema = 0;
+      VACUUM;
+      """
+    case type_db do
+       1 -> Exqlite.Sqlite3.execute(conn, "DELETE FROM hosts;")
+       2 -> Exqlite.Sqlite3.execute(conn, function_db_clear_query)
+        
+    end
   end
 end

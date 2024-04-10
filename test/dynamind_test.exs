@@ -1,5 +1,4 @@
 defmodule DynamindTest do
-  import EECOM
   import Db.Management
   use ExUnit.Case
   doctest Dynamind
@@ -27,7 +26,8 @@ defmodule DynamindTest do
   """
 
   test "Clear database before commit" do
-    {:ok, conn} = db_connect()
-    assert db_clear(conn) == :ok
+    {:ok, conn_1} = db_connect(1)
+    {:ok, conn_2} = db_connect(2)
+    assert (db_clear(conn_1, 1) == :ok) && (db_clear(conn_2, 2) == :ok)
   end
 end

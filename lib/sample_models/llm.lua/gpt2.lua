@@ -87,6 +87,6 @@ function layernorm_forward(out, mean, rstd, inp, weight, bias, B, T, C)
 end
 
 -- TODO implement layernorm_backward
-funciton layernorm_backward(dinp, dweight, dbias, dout, inp, weight, mean, rstd, B, T, C)
+function layernorm_backward(dinp, dweight, dbias, dout, inp, weight, mean, rstd, B, T, C)
 
 end
