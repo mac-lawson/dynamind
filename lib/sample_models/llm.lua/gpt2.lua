@@ -88,5 +88,7 @@ end
 
 -- TODO implement layernorm_backward
 function layernorm_backward(dinp, dweight, dbias, dout, inp, weight, mean, rstd, B, T, C)
-
+ for b=0, B - 1 do
+  
+ end
 end

@@ -14,6 +14,7 @@
 +------------------------------------------------------------------------------+
 
 ```
+![excali](/docs/excali.svg)
 
 # Dynamind: Distributed Machine Learning
 
