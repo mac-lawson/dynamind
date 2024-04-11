@@ -46,7 +46,8 @@ defmodule Tasking do
     update_uptime(conn, "test@testhost.org", 100)
   end
 
-# TODO add something to not actually run the functions, just get info about them. 
+# TODO
+  # Run functions that have an arity of >0 properly
 @spec process_module(module :: module()) :: map()
 def process_module(module) do
   work_requirements = %{}
@@ -65,6 +66,27 @@ def process_module(module) do
   work_requirements
 end
 
+
+
+@spec process_module_test(module :: module()) :: map()
+def process_module_test(module) do
+  work_requirements = %{}
+  pub_fns = module.__info__(:functions)
+  work_requirements = Enum.reduce(pub_fns, work_requirements, fn {function, arity}, acc ->
+    IO.puts("Processing function #{function} with arity #{arity}")
+    t = &(apply(&1, {module, function}))
+    tval = t.(arity)
+    if is_tuple(tval) do 
+      work_req = List.last(Tuple.to_list(tval))
+      Map.put(acc, function, Map.fetch(tasking_reqs(), work_req))
+    else 
+      Map.put(acc, function, tval)
+    end
+  end)
+  work_requirements
+end
+
+
 @doc """
 Identifies the functions in a module and returns a map of the functions WITHOUT their work requirements.
 """
@@ -76,7 +98,21 @@ end
 
 def full_process(module) do
   work_requirements = process_module(module)
-  insert_module_data(work_requirements, "0", 0, module, 0, process_module_silent(module), module)
+  insert_module_data(work_requirements, to_string(module))
 end
+
+@spec multi_full_process(list()) :: list()
+def multi_full_process(modules) do
+    Enum.map(modules, &full_process/1)
+end
+
+# TODO
+  # Get stored functions from Func DB and nodes from Node DB and compare work_reqs and staging to begin creating an execution map. 
+def pair_function_modules() do
+{:ok, nodes_conn} = db_connect(1)
+{:ok, func_conn} = db_connect(2)
+
+end
+
 
 end

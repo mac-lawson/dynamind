@@ -6,14 +6,14 @@ defmodule SampleModels.Tensor do
     {x, y, :one}
   end
 
-  @spec model_creation() :: {Axon.model(), Tasking.work_specs()}
-  def model_creation() do
+  @spec model_creation(any()) :: {Axon.model(), Tasking.work_specs()}
+  def model_creation(inp) do
     workspec = false
 
     if EnvironmentUtils.is_workspec(workspec) do
       {Axon.input("input", shape: {nil, 784})
        |> Axon.dense(128)
-       |> Axon.dense(10, activation: :softmax), :two}
+       |> Axon.dense(inp, activation: :softmax), :two}
     end
   end
 end

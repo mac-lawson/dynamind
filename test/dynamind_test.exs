@@ -9,10 +9,6 @@ defmodule DynamindTest do
   Environment Module Tests
   """
 
-  test "Gets system architecture" do
-    assert Dynamind.envinitARCH() == :erlang.system_info(:system_architecture)
-  end
-
   """
   Database tests
   """

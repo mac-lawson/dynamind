@@ -13,8 +13,8 @@ defmodule Db.Utils do
         id,
         memory,
         stage_number,
-        Node.connect(id),
-        Node.ping(id)
+        Node.connect(String.to_atom(id)),
+        Node.ping(String.to_atom(id))
       ])
 
     :done = Exqlite.Sqlite3.step(conn, statement)
@@ -48,21 +48,39 @@ defmodule Db.Utils do
   end
 
 # TODO
-#     Issue: line 56, cannot convert the map "work_reqs" to a string
-@deprecated "do not use, still working on"
-def insert_module_data(work_reqs, memory, stage_number, reference, uptime, functions_assigned, table_name) do
+  # Need to re-integrate this back to the Db.Statements module. Fix the table issue.
+def insert_module_data(func_name, work_req, memory, stage_num, reference, module_name) do
   {:ok, conn} = db_connect(2)
-  work_reqs_string = to_string(inspect(Map.to_list(work_reqs)))
-  {:ok, statement} = Exqlite.Sqlite3.prepare(
-    conn,
-    "INSERT INTO #{String.replace(to_string(table_name), ".", "_")} (work_reqs, memory, stage_number, reference, uptime, functions_assigned) VALUES (?1, ?2, ?3, ?4, ?5, ?6)"
-  )
-  :ok = Exqlite.Sqlite3.bind(
-    conn,
-    statement,
-    [work_reqs_string, to_string(memory), stage_number, to_string(reference), to_string(uptime), to_string(functions_assigned)]
-  )
+    # insert_query_module = "INSERT INTO Elixir_SampleModels_Tensor (function_name, work_req, memory, stage_number, reference) VALUES (?1, ?2, ?3, ?4, ?5)"
+  {:ok, statement} = create_module_query(conn, module_name)
+  Exqlite.Sqlite3.bind(conn, statement, [func_name, work_req, memory, stage_num, reference |> to_string()])
   Exqlite.Sqlite3.step(conn, statement)
+end
+
+# Takes a string and removes the "." and appends the front with "Elixir_"
+  # TODO - Future item, remove the use of the "Elixir_" prefix from all Database tables.
+@spec proper_module_table_name(binary()) :: binary()
+defp proper_module_table_name(module_name) do
+  String.replace(module_name, ".", "_")
+end
+
+# TODO
+  # Need to clean this up
+def insert_module_data(module_process_result, module_name) do
+  for {key, value} <- module_process_result do
+      if is_tuple(value) do
+        value = Tuple.to_list(value)
+        value |> IO.inspect()
+
+        insert_module_data(key, List.last(value), 0, 0, key, proper_module_table_name(module_name))
+
+        
+      else
+        value |> IO.inspect()
+            insert_module_data(key, value, 0, 0, key, proper_module_table_name(module_name))
+      
+      end 
+  end
 end
 
 end

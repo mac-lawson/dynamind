@@ -9,7 +9,8 @@ def db_init() do
 
   node_db_std_setup(conn)
 end
-
+  # TODO
+     # Remove the prefix Elixir_ from the table name
 @spec db_init(module :: module()) :: :ok
 def db_init(module) do
   {:ok, conn} = open_conn(@std_func_db_path)
@@ -70,12 +71,11 @@ defp function_db_std_setup(conn, module) do
   table_name = String.replace(to_string(module), ".", "_")
   sql_query = """
     CREATE TABLE IF NOT EXISTS #{table_name} (
-      work_reqs VARCHAR(255),
+      function_name VARCHAR(255),
+      work_req VARCHAR(255),
       memory VARCHAR(255),
       stage_number INT,
-      reference VARCHAR(255),
-      uptime VARCHAR(255),
-      functions_assigned VARCHAR(255)
+      reference VARCHAR(255)
     );
   """
   case Exqlite.Sqlite3.execute(conn, sql_query) do
