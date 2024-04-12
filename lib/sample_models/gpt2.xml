@@ -6,6 +6,7 @@
     <Author>John Doe</Author>
     <CreationDate>2024-04-09</CreationDate>
     <Processor>CPU</Processor>
+    <Work_Req>:five</Work_Req>
     <OpenMP>true</OpenMP>
     <Compiler>gcc</Compiler>
     <CompilerVersion>11.2.0</CompilerVersion>

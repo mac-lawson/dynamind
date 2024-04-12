@@ -10,10 +10,7 @@ class LanguageDetector {
       case "rb" | "ruby" => Some("Ruby")
       case "js" | "javascript" => Some("JavaScript")
       case "cpp" | "c" | "h" | "hpp" => Some("C/C++")
-      case "html" | "htm" => Some("HTML")
-      case "css" => Some("CSS")
       case "xml" => Some("XML")
-      case "json" => Some("JSON")
       case "sql" => Some("SQL")
       case _ => None
     }

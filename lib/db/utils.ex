@@ -4,24 +4,20 @@ defmodule Db.Utils do
   import Db.Statements
   import Db.Management
 
+  @doc """
+  Inserts data into the database.
+  """
   @spec insert(reference(), any(), any(), any()) :: :done
   def insert(conn, id, memory, stage_number) do
     {:ok, statement} = new_node_statement(conn)
 
-    :ok =
-      Exqlite.Sqlite3.bind(conn, statement, [
-        id,
-        memory,
-        stage_number,
-        Node.connect(String.to_atom(id)),
-        Node.ping(String.to_atom(id))
-      ])
+    :ok = Exqlite.Sqlite3.bind(conn, statement, [id, memory, stage_number, Node.connect(String.to_atom(id)), Node.ping(String.to_atom(id))])
 
     :done = Exqlite.Sqlite3.step(conn, statement)
   end
+
   @doc """
-  Pulls the row for a specific host ID (i.e "test@testhost.org")
-  {:row, ["test3@testhost.org", "0", 1, "ignored", "pang"]}
+  Fetches a specific row for a given host ID.
   """
   @spec get(reference(), any()) :: :busy | :done | {:error, atom() | binary()} | {:row, list()}
   def get(conn, id) do
@@ -30,39 +26,27 @@ defmodule Db.Utils do
     Exqlite.Sqlite3.step(conn, statement)
   end
 
-  # allows for the fetching of all rows from a statement, not just one
-  defp fetch_all_rows(conn, statement, acc) do
-  case Exqlite.Sqlite3.step(conn, statement) do
-    {:row, row} ->
-      fetch_all_rows(conn, statement, [row | acc])
-    :done ->
-      {:done, Enum.reverse(acc)}
-    error ->
-      error
-  end
-  end
-
-@doc """
- Pulls all rows from the hosts table. 
-    {:done,
- [
-   ["test@testhost.org", "0", 1, "ignored", "pang"],
-   ["test1@testhost.org", "0", 1, "ignored", "pang"],
-   ["test3@testhost.org", "0", 1, "ignored", "pang"]
- ]}
-"""
-@spec pull_all(reference()) :: :busy | :done | {:error, atom() | binary()} | {:row, list()}
-def pull_all(conn) do
-  {:ok, statement} = Exqlite.Sqlite3.prepare(conn, @pull_all_query)
-  
-  rows = fetch_all_rows(conn, statement, [])
-  
-  # Close the statement to release resources
-  Exqlite.Sqlite3.step(conn, statement)
+  @doc """
+  Pulls all rows from the hosts table.
+  """
+  @spec pull_all(reference()) :: :busy | :done | {:error, atom() | binary()} | {:row, list()}
+  def pull_all(conn) do
+    {:ok, statement} = Exqlite.Sqlite3.prepare(conn, @pull_all_query)
+    rows = fetch_all_rows(conn, statement, [])
     Exqlite.Sqlite3.release(conn, statement)
-  rows
-end
+    rows
+  end
 
+  def pull_all_modules(conn) do
+    {:ok, statement} = Exqlite.Sqlite3.prepare(conn, "SELECT name FROM sqlite_master WHERE type='table';")
+    rows = fetch_all_rows(conn, statement, [])
+    Exqlite.Sqlite3.release(conn, statement)
+    rows
+  end
+
+  @doc """
+  Updates the uptime for a specific host.
+  """
   @spec update_uptime(reference(), any(), any()) :: :done
   def update_uptime(conn, id, uptime) do
     {:ok, statement} = set_uptime_statement(conn)
@@ -70,6 +54,9 @@ end
     Exqlite.Sqlite3.step(conn, statement)
   end
 
+  @doc """
+  Retrieves the uptime for a specific host.
+  """
   @spec get_uptime(reference(), any()) :: {:row, list()}
   def get_uptime(conn, id) do
     {:ok, statement} = get_uptime_statement(conn)
@@ -77,8 +64,7 @@ end
     {:row, _data} = Exqlite.Sqlite3.step(conn, statement)
   end
 
-# TODO
-  # Need to re-integrate this back to the Db.Statements module. Fix the table issue.
+
 def insert_module_data(func_name, work_req, memory, stage_num, reference, module_name) do
   {:ok, conn} = db_connect(2)
     # insert_query_module = "INSERT INTO Elixir_SampleModels_Tensor (function_name, work_req, memory, stage_number, reference) VALUES (?1, ?2, ?3, ?4, ?5)"
@@ -86,16 +72,9 @@ def insert_module_data(func_name, work_req, memory, stage_num, reference, module
   Exqlite.Sqlite3.bind(conn, statement, [func_name, work_req, memory, stage_num, reference |> to_string()])
   Exqlite.Sqlite3.step(conn, statement)
 end
-
-# Takes a string and removes the "." and appends the front with "Elixir_"
-  # TODO - Future item, remove the use of the "Elixir_" prefix from all Database tables.
-@spec proper_module_table_name(binary()) :: binary()
-defp proper_module_table_name(module_name) do
-  String.replace(module_name, ".", "_")
-end
-
-# TODO
-  # Need to clean this up
+  @doc """
+  Inserts module data into the database.
+  """
 def insert_module_data(module_process_result, module_name) do
   for {key, value} <- module_process_result do
       if is_tuple(value) do
@@ -112,5 +91,21 @@ def insert_module_data(module_process_result, module_name) do
       end 
   end
 end
+  # Private functions
 
+  defp proper_module_table_name(module_name) do
+    String.replace(module_name, ".", "_")
+  end
+
+  defp fetch_all_rows(conn, statement, acc) do
+    case Exqlite.Sqlite3.step(conn, statement) do
+      {:row, row} ->
+        fetch_all_rows(conn, statement, [row | acc])
+      :done ->
+        {:done, Enum.reverse(acc)}
+      error ->
+        error
+    end
+  end
 end
+

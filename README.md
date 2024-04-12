@@ -25,6 +25,35 @@ Dynamind uses Erlang and Elixir to empower distributed computing for machine lea
 3. Add the hosts, *one per line*, that you want to connect to.
 
 ### Add your MODULES
+#### Elixir MODULES
+##### Prepare your module for upload
+1. Ensure your module returns the proper work requirement. 
+The Dynamind work requirement is a user-defined atom that **must** be returned by every function in your module. We do not calculate the computational requirements of the functions in your module, therefore you must provide this information. Work requirements are extremely subjective based on the scale of your project and the importance of the module you are uploading.
+| :one    | :two    | :three    | :four    | :five    |
+|---------------- | --------------- | --------------- | --------------- | --------------- |
+| Simple tasks, IO, basic math    | Larger simple tasks, more complex math    | CPU work and things of the sort; something that begins to require computational intensity     | Work that will require a significant spike in node resources and requires dedicated resources.   | The main "work-horses" of your module. Modules that require *at a minimum* one or even more dedicated nodes when the task runs.  |
+
+Below is a sample function. As you can see, the spec defines that a work requirement will be returned. 
+```elixir
+defmodule SampleModels.Tensor do
+  @spec make_a_tensor() :: {any(), any(), Tasking.work_specs()}
+  def make_a_tensor do
+    t = Nx.tensor([[1, 2], [3, 4]])
+    {x, y} = Nx.shape(t)
+    {x, y, :one}
+  end
+```
+When your module is in-processed through your module processing engine, the work requirement will be extracted and used to determine the stage and node that it will be paired with.
+
+#### Non-Elixir files, models, and other resources
+##### NEPT
+NEPT is a simple, easy-to-use, and powerful tool for managing your non-Elixir files and resources. It requires a simple XML file that contains the path to your resource, the work requirement, and the stage that it will be processed on. The user generates this file based off of what it wants Dynamind to do with the resource. For example [here](lib/sample_models/gpt2.xml) is a sample NEPT file for GPT-2 trainer written in C. The user specified in this file that the resource will be run on the CPU, has a work requirement of :five, and has three KPIs (Training Speed, Model Usage, and Model Quality).
+
+**> [!IMPORTANT]
+> The only requirement in a NEPT file is the work requirement. It does not matter how you identify it, as long it is in Elixir atom format. (:one, :two, :three, :four, or :five)**
+
+The NEPT processor intakes your XML file and, using AI, converts it into a stage for Dynamind to work with.  
+
 
 ## Managing your Elixir Installation
 Your system and ALL NODES must be running the same version of Elixir. Most of this project's dependencies require Elixir .11 or higher, and running multiple clusters with different versions of Elixir will cause issues.
