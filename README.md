@@ -29,6 +29,8 @@ Dynamind uses Erlang and Elixir to empower distributed computing for machine lea
 ##### Prepare your module for upload
 1. Ensure your module returns the proper work requirement. 
 The Dynamind work requirement is a user-defined atom that **must** be returned by every function in your module. We do not calculate the computational requirements of the functions in your module, therefore you must provide this information. Work requirements are extremely subjective based on the scale of your project and the importance of the module you are uploading.
+
+
 | Work Requirement     | Description                                                                                          |
 |----------------------|------------------------------------------------------------------------------------------------------|
 | :one                 | Simple tasks, IO, basic math                                                                         |
