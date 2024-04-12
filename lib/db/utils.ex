@@ -19,7 +19,10 @@ defmodule Db.Utils do
 
     :done = Exqlite.Sqlite3.step(conn, statement)
   end
-
+  @doc """
+  Pulls the row for a specific host ID (i.e "test@testhost.org")
+  {:row, ["test3@testhost.org", "0", 1, "ignored", "pang"]}
+  """
   @spec get(reference(), any()) :: :busy | :done | {:error, atom() | binary()} | {:row, list()}
   def get(conn, id) do
     {:ok, statement} = get_node_statement(conn)
@@ -27,11 +30,38 @@ defmodule Db.Utils do
     Exqlite.Sqlite3.step(conn, statement)
   end
 
-  @spec pull_all(reference()) :: :busy | :done | {:error, atom() | binary()} | {:row, list()}
-  def pull_all(conn) do
-    {:ok, statement} = Exqlite.Sqlite3.prepare(conn, @pull_all_query)
-    Exqlite.Sqlite3.step(conn, statement)
+  # allows for the fetching of all rows from a statement, not just one
+  defp fetch_all_rows(conn, statement, acc) do
+  case Exqlite.Sqlite3.step(conn, statement) do
+    {:row, row} ->
+      fetch_all_rows(conn, statement, [row | acc])
+    :done ->
+      {:done, Enum.reverse(acc)}
+    error ->
+      error
   end
+  end
+
+@doc """
+ Pulls all rows from the hosts table. 
+    {:done,
+ [
+   ["test@testhost.org", "0", 1, "ignored", "pang"],
+   ["test1@testhost.org", "0", 1, "ignored", "pang"],
+   ["test3@testhost.org", "0", 1, "ignored", "pang"]
+ ]}
+"""
+@spec pull_all(reference()) :: :busy | :done | {:error, atom() | binary()} | {:row, list()}
+def pull_all(conn) do
+  {:ok, statement} = Exqlite.Sqlite3.prepare(conn, @pull_all_query)
+  
+  rows = fetch_all_rows(conn, statement, [])
+  
+  # Close the statement to release resources
+  Exqlite.Sqlite3.step(conn, statement)
+    Exqlite.Sqlite3.release(conn, statement)
+  rows
+end
 
   @spec update_uptime(reference(), any(), any()) :: :done
   def update_uptime(conn, id, uptime) do
