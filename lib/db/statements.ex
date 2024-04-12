@@ -33,10 +33,16 @@ defmodule Db.Statements do
     {:ok, statement}
   end
   
-  @doc false
-  @spec create_module_query(reference(), any()) :: {:ok, reference()}
   def create_module_query(conn, module_name) do
     Exqlite.Sqlite3.prepare(conn, "INSERT INTO #{module_name} (function_name, work_req, memory, stage_number, reference) VALUES (?1, ?2, ?3, ?4, ?5);")
+  end
+
+  def pull_module_query(conn, module_name) do
+    Exqlite.Sqlite3.prepare(conn, "SELECT * FROM #{module_name};")
+  end
+
+  def pull_specific_function_from_module_query(conn, module_name) do
+      Exqlite.Sqlite3.prepare(conn, "SELECT * FROM #{module_name} WHERE function_name = ?1;")
   end
   
 end

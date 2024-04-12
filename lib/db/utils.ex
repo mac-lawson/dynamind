@@ -63,6 +63,34 @@ defmodule Db.Utils do
     :ok = Exqlite.Sqlite3.bind(conn, statement, [id])
     {:row, _data} = Exqlite.Sqlite3.step(conn, statement)
   end
+  
+  @doc """
+  Gets all the processed functions from a module. 
+    {:done,
+     [
+   ["make_a_tensor", "1", "0", 0, "make_a_tensor"],
+   ["model_creation", nil, "0", 0, "model_creation"]
+  ]}
+  """
+  @spec get_module_functions(reference(), any()) :: {:done, list()}
+  def get_module_functions(conn, module_name) do
+    {:ok, statement} = pull_module_query(conn, proper_module_table_name(module_name))
+    #Exqlite.Sqlite3.step(conn, statement)
+    rows = fetch_all_rows(conn, statement, [])
+    Exqlite.Sqlite3.release(conn, statement)
+    rows
+  end
+
+  def get_function_from_module(conn, module_name, function_name) do
+    {:ok, statement} = pull_specific_function_from_module_query(conn, proper_module_table_name(module_name))
+    :ok = Exqlite.Sqlite3.bind(conn, statement, [function_name])
+    #Exqlite.Sqlite3.step(conn, statement)
+    rows = fetch_all_rows(conn, statement, [])
+    Exqlite.Sqlite3.release(conn, statement)
+    rows
+  end
+
+
 
 
 def insert_module_data(func_name, work_req, memory, stage_num, reference, module_name) do
@@ -91,10 +119,13 @@ def insert_module_data(module_process_result, module_name) do
       end 
   end
 end
+
+
+
   # Private functions
 
   defp proper_module_table_name(module_name) do
-    String.replace(module_name, ".", "_")
+    String.replace(to_string(module_name), ".", "_")
   end
 
   defp fetch_all_rows(conn, statement, acc) do

@@ -52,14 +52,7 @@ defmodule SampleModels.Tensor do
 When your module is in-processed through your module processing engine, the work requirement will be extracted and used to determine the stage and node that it will be paired with.
 
 #### Non-Elixir files, models, and other resources
-##### NEPT
-NEPT is a simple, easy-to-use, and powerful tool for managing your non-Elixir files and resources. It requires a simple XML file that contains the path to your resource, the work requirement, and the stage that it will be processed on. The user generates this file based off of what it wants Dynamind to do with the resource. For example [here](lib/sample_models/gpt2.xml) is a sample NEPT file for GPT-2 trainer written in C. The user specified in this file that the resource will be run on the CPU, has a work requirement of :five, and has three KPIs (Training Speed, Model Usage, and Model Quality).
-
-**> [!IMPORTANT]
-> The only requirement in a NEPT file is the work requirement. It does not matter how you identify it, as long it is in Elixir atom format. (:one, :two, :three, :four, or :five)**
-
-The NEPT processor intakes your XML file and, using AI, converts it into a stage for Dynamind to work with.  
-
+*Coming Soon*
 
 ## Managing your Elixir Installation
 Your system and ALL NODES must be running the same version of Elixir. Most of this project's dependencies require Elixir .11 or higher, and running multiple clusters with different versions of Elixir will cause issues.
