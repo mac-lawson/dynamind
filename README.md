@@ -29,9 +29,13 @@ Dynamind uses Erlang and Elixir to empower distributed computing for machine lea
 ##### Prepare your module for upload
 1. Ensure your module returns the proper work requirement. 
 The Dynamind work requirement is a user-defined atom that **must** be returned by every function in your module. We do not calculate the computational requirements of the functions in your module, therefore you must provide this information. Work requirements are extremely subjective based on the scale of your project and the importance of the module you are uploading.
-| :one    | :two    | :three    | :four    | :five    |
-|---------------- | --------------- | --------------- | --------------- | --------------- |
-| Simple tasks, IO, basic math    | Larger simple tasks, more complex math    | CPU work and things of the sort; something that begins to require computational intensity     | Work that will require a significant spike in node resources and requires dedicated resources.   | The main "work-horses" of your module. Modules that require *at a minimum* one or even more dedicated nodes when the task runs.  |
+| Work Requirement     | Description                                                                                          |
+|----------------------|------------------------------------------------------------------------------------------------------|
+| :one                 | Simple tasks, IO, basic math                                                                         |
+| :two                 | Larger simple tasks, more complex math                                                               |
+| :three               | CPU work and things of the sort; something that begins to require computational intensity           |
+| :four                | Work that will require a significant spike in node resources and requires dedicated resources.       |
+| :five                | The main "work-horses" of your module. Modules that require *at a minimum* one or even more dedicated nodes when the task runs.  |
 
 Below is a sample function. As you can see, the spec defines that a work requirement will be returned. 
 ```elixir
