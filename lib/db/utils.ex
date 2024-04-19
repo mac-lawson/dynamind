@@ -11,7 +11,14 @@ defmodule Db.Utils do
   def insert(conn, id, memory, stage_number) do
     {:ok, statement} = new_node_statement(conn)
 
-    :ok = Exqlite.Sqlite3.bind(conn, statement, [id, memory, stage_number, Node.connect(String.to_atom(id)), Node.ping(String.to_atom(id))])
+    :ok =
+      Exqlite.Sqlite3.bind(conn, statement, [
+        id,
+        memory,
+        stage_number,
+        Node.connect(String.to_atom(id)),
+        Node.ping(String.to_atom(id))
+      ])
 
     :done = Exqlite.Sqlite3.step(conn, statement)
   end
@@ -38,7 +45,9 @@ defmodule Db.Utils do
   end
 
   def pull_all_modules(conn) do
-    {:ok, statement} = Exqlite.Sqlite3.prepare(conn, "SELECT name FROM sqlite_master WHERE type='table';")
+    {:ok, statement} =
+      Exqlite.Sqlite3.prepare(conn, "SELECT name FROM sqlite_master WHERE type='table';")
+
     rows = fetch_all_rows(conn, statement, [])
     Exqlite.Sqlite3.release(conn, statement)
     rows
@@ -63,7 +72,7 @@ defmodule Db.Utils do
     :ok = Exqlite.Sqlite3.bind(conn, statement, [id])
     {:row, _data} = Exqlite.Sqlite3.step(conn, statement)
   end
-  
+
   @doc """
   Gets all the processed functions from a module. 
     {:done,
@@ -75,52 +84,63 @@ defmodule Db.Utils do
   @spec get_module_functions(reference(), any()) :: {:done, list()}
   def get_module_functions(conn, module_name) do
     {:ok, statement} = pull_module_query(conn, proper_module_table_name(module_name))
-    #Exqlite.Sqlite3.step(conn, statement)
+    # Exqlite.Sqlite3.step(conn, statement)
     rows = fetch_all_rows(conn, statement, [])
     Exqlite.Sqlite3.release(conn, statement)
     rows
   end
 
   def get_function_from_module(conn, module_name, function_name) do
-    {:ok, statement} = pull_specific_function_from_module_query(conn, proper_module_table_name(module_name))
+    {:ok, statement} =
+      pull_specific_function_from_module_query(conn, proper_module_table_name(module_name))
+
     :ok = Exqlite.Sqlite3.bind(conn, statement, [function_name])
-    #Exqlite.Sqlite3.step(conn, statement)
+    # Exqlite.Sqlite3.step(conn, statement)
     rows = fetch_all_rows(conn, statement, [])
     Exqlite.Sqlite3.release(conn, statement)
     rows
   end
 
+  def insert_module_data(func_name, work_req, memory, stage_num, reference, module_name) do
+    {:ok, conn} = db_connect(2)
 
-
-
-def insert_module_data(func_name, work_req, memory, stage_num, reference, module_name) do
-  {:ok, conn} = db_connect(2)
     # insert_query_module = "INSERT INTO Elixir_SampleModels_Tensor (function_name, work_req, memory, stage_number, reference) VALUES (?1, ?2, ?3, ?4, ?5)"
-  {:ok, statement} = create_module_query(conn, module_name)
-  Exqlite.Sqlite3.bind(conn, statement, [func_name, work_req, memory, stage_num, reference |> to_string()])
-  Exqlite.Sqlite3.step(conn, statement)
-end
+    {:ok, statement} = create_module_query(conn, module_name)
+
+    Exqlite.Sqlite3.bind(conn, statement, [
+      func_name,
+      work_req,
+      memory,
+      stage_num,
+      reference |> to_string()
+    ])
+
+    Exqlite.Sqlite3.step(conn, statement)
+  end
+
   @doc """
   Inserts module data into the database.
   """
-def insert_module_data(module_process_result, module_name) do
-  for {key, value} <- module_process_result do
+  def insert_module_data(module_process_result, module_name) do
+    for {key, value} <- module_process_result do
       if is_tuple(value) do
         value = Tuple.to_list(value)
         value |> IO.inspect()
 
-        insert_module_data(key, List.last(value), 0, 0, key, proper_module_table_name(module_name))
-
-        
+        insert_module_data(
+          key,
+          List.last(value),
+          0,
+          0,
+          key,
+          proper_module_table_name(module_name)
+        )
       else
         value |> IO.inspect()
-            insert_module_data(key, value, 0, 0, key, proper_module_table_name(module_name))
-      
-      end 
+        insert_module_data(key, value, 0, 0, key, proper_module_table_name(module_name))
+      end
+    end
   end
-end
-
-
 
   # Private functions
 
@@ -132,11 +152,12 @@ end
     case Exqlite.Sqlite3.step(conn, statement) do
       {:row, row} ->
         fetch_all_rows(conn, statement, [row | acc])
+
       :done ->
         {:done, Enum.reverse(acc)}
+
       error ->
         error
     end
   end
 end
-

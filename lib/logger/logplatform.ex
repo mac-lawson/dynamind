@@ -36,6 +36,8 @@ defmodule DynaMind.Logger do
   """
   def log(severity, message) do
     timestamp = DateTime.utc_now() |> DateTime.to_iso8601()
-    IO.puts("#{timestamp} [#{severity}] #{message}")
+    msg = "#{timestamp} [#{severity}] #{message}"
+    msg |> IO.puts()
+    msg
   end
 end
