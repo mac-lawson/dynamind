@@ -22,8 +22,16 @@ Dynamind uses Erlang and Elixir to empower distributed computing for machine lea
 
 ### Setup your NODES
 1. Open the `config.dynm`
-2. From the basic installation there will be three example hosts already in the file. **Delete these**.
-3. Add the hosts, *one per line*, that you want to connect to.
+2. Add your nodes under the 'nodes key' & your modules under the 'modules key'. 
+
+```yaml
+- nodes
+one@localhost
+
+- modules
+SampleModels.tensor
+
+```
 
 ### Add your MODULES
 #### Elixir MODULES
