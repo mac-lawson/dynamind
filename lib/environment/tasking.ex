@@ -24,7 +24,7 @@ defmodule Tasking do
       {:ok, conn} = db_connect(1)
       info("Connected to database")
 
-      for remote_host <- Utils.ConfigFileToArray.read_default_config() do
+      for remote_host <- Utils.ConfigFileToArray.read_nodes_from_config("config.dynm") do
         warning("Host added to schema: #{remote_host}")
         insert(conn, remote_host, 0, 0)
       end
@@ -98,6 +98,13 @@ defmodule Tasking do
     module.__info__(:functions)
   end
 
+  @doc """
+  *Full Process*
+  The full process function takes a module and processes it, then inserts the data into the database.
+
+  *Known issues*
+  - Can not process modules that have functions with an arity of >0.
+  """
   def full_process(module) do
     work_requirements = process_module(module)
     insert_module_data(work_requirements, to_string(module))

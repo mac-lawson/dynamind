@@ -1,6 +1,6 @@
 defmodule Db.Statements do
   @insert_query "INSERT INTO hosts (id, memory, stage_number, reference, uptime) VALUES (?1, ?2, ?3, ?4, ?5);"
-  #@insert_query_module "INSERT INTO ?1 (function_name, work_req, memory, stage_number, reference) VALUES (?2, ?3, ?4, ?5, ?6);"
+  # @insert_query_module "INSERT INTO ?1 (function_name, work_req, memory, stage_number, reference) VALUES (?2, ?3, ?4, ?5, ?6);"
   @pull_query "SELECT * FROM hosts WHERE id = ?1;"
   @insert_uptime_query "UPDATE hosts SET uptime = ?1 WHERE id = ?2;"
   @pull_uptime_query "SELECT uptime FROM hosts WHERE id = ?1;"
@@ -32,9 +32,12 @@ defmodule Db.Statements do
     {:ok, statement} = Exqlite.Sqlite3.prepare(conn, @pull_uptime_query)
     {:ok, statement}
   end
-  
+
   def create_module_query(conn, module_name) do
-    Exqlite.Sqlite3.prepare(conn, "INSERT INTO #{module_name} (function_name, work_req, memory, stage_number, reference) VALUES (?1, ?2, ?3, ?4, ?5);")
+    Exqlite.Sqlite3.prepare(
+      conn,
+      "INSERT INTO #{module_name} (function_name, work_req, memory, stage_number, reference) VALUES (?1, ?2, ?3, ?4, ?5);"
+    )
   end
 
   def pull_module_query(conn, module_name) do
@@ -42,7 +45,10 @@ defmodule Db.Statements do
   end
 
   def pull_specific_function_from_module_query(conn, module_name) do
-      Exqlite.Sqlite3.prepare(conn, "SELECT * FROM #{module_name} WHERE function_name = ?1;")
+    Exqlite.Sqlite3.prepare(conn, "SELECT * FROM #{module_name} WHERE function_name = ?1;")
   end
-  
+
+  def pull_table_query(table_name) do
+    "SELECT name FROM sqlite_master WHERE type='table';"
+  end
 end

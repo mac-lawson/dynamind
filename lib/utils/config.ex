@@ -10,17 +10,31 @@ defmodule Utils.ConfigFileToArray do
     end
   end
 
-  @doc """
-  Reads the default config file and returns a list containing each node in the file.
-  """
-  def read_default_config() do
-    read_lines("config.dynm")
+  defp extract_nodes(contents) do
+    contents
+    |> Enum.take_while(&(&1 != "- modules"))
+  end
+
+  defp extract_modules(contents) do
+    contents
+    |> Enum.drop_while(&(&1 != "- modules"))
+    |> tl()
   end
 
   @doc """
-  Reads a non-default config file and returns a list containing each node in the file.
+  Reads nodes from a non-default config file and returns a list containing each node.
   """
-  def read_non_default_config(file_path) do
-    read_lines(file_path)
+  def read_nodes_from_config(file_path) do
+    file_contents = read_lines(file_path)
+    extract_nodes(file_contents)
+  end
+
+  @doc """
+  Reads modules from a non-default config file and returns a list containing each module.
+  """
+  def read_modules_from_config(file_path) do
+    file_contents = read_lines(file_path)
+    extract_modules(file_contents)
   end
 end
+
