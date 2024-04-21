@@ -5,6 +5,7 @@
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/mac-lawson/dynamind/elixir.yml)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/mac-lawson/dynamind)
 ![Hex.pm Version](https://img.shields.io/hexpm/v/axon)
+[TODO Chart](docs/TODO.md)
 
 -------------------
 This project aims to develop a distributed cognitive agent system using Elixir, capable of dynamic resource allocation in complex environments.

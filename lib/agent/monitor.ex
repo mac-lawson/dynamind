@@ -5,19 +5,21 @@ defmodule Agent.Monitor do
   """
 
   # import Db.Utils
+  require Logger
 
   @spec monitor(reference()) :: :ok
   def monitor(conn) do
     {:done, values} = Db.Utils.pull_all(conn)
 
     Enum.each(values, fn [id, memory, stage_number, _node, ping] ->
-      if ping == :ping do
-        DynaMind.Logger.log("INFO", "Node #{id} is alive, making a connection")
+      if ping == :pong |> Atom.to_string() do
+        # DynaMind.Logger.log("INFO", "Node #{id} is alive, making a connection")
+        Logger.info("Node #{id} is alive, making a connection")
         Db.Utils.insert(conn, id, memory, stage_number)
         Node.ping(String.to_atom(id))
       else
         # Log an error connecting to the node, append the errors list. 
-        DynaMind.Logger.log("INFO", "Node #{id} is dead, cannot connect")
+        Logger.error("Node #{id} is dead, cannot connect")
       end
     end)
   end
