@@ -12,7 +12,9 @@ defmodule Utils.ConfigFileToArray do
 
   defp extract_nodes(contents) do
     contents
+    |> Enum.drop_while(&(&1 != "- nodes"))
     |> Enum.take_while(&(&1 != "- modules"))
+    |> Enum.filter(fn line -> String.match?(line, ~r/^\w+@\w+/) end)
   end
 
   defp extract_modules(contents) do
@@ -37,4 +39,3 @@ defmodule Utils.ConfigFileToArray do
     extract_modules(file_contents)
   end
 end
-

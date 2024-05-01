@@ -1,6 +1,6 @@
 defmodule DynamindAPIServer do
   def start(port) do
-    Agent.start_link(fn -> "Dynamind is running..." end, name: __MODULE__)
+    Agent.start_link(fn -> %{} end, name: __MODULE__)
     {:ok, listener} = :gen_tcp.listen(port, [:binary, packet: :line, active: false])
     loop_accept(listener)
   end
@@ -16,10 +16,6 @@ defmodule DynamindAPIServer do
     loop_accept(listener)
   end
 
-  defp get_state() do
-    Agent.get(__MODULE__, fn state -> state end)
-  end
-
   defp handle_request(socket) do
     case :gen_tcp.recv(socket, 0) do
       {:ok, request} ->
@@ -31,18 +27,41 @@ defmodule DynamindAPIServer do
   end
 
   defp handle_http_request(request, socket) do
-    data = get_state()
-
     case String.split(request, " ") do
-      ["GET", _path, _] ->
-        response = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\n#{data}\r\n"
-        :gen_tcp.send(socket, response)
+      ["GET", "/modules", _] ->
+        response = handle_modules_request()
+        send_response(socket, response)
+
+      ["GET", "/config", _] ->
+        response = handle_config_request()
+        send_response(socket, response)
 
       _ ->
-        response = "HTTP/1.1 400 Bad Request\r\n\r\n"
-        :gen_tcp.send(socket, response)
+        send_error_response(socket)
     end
+  end
 
+  defp handle_modules_request() do
+    # Logic to fetch active modules
+    modules = ["module1", "module2", "module3"]
+    "HTTP/1.1 200 OK\r\nContent-Type: application/json\r\n\r\n#{inspect(modules)}\r\n"
+  end
+
+  defp handle_config_request() do
+    # Logic to fetch config file
+    config = %{}
+    "HTTP/1.1 200 OK\r\nContent-Type: application/json\r\n\r\n#{inspect(config)}\r\n"
+  end
+
+  defp send_response(socket, response) do
+    :gen_tcp.send(socket, response)
+    :gen_tcp.close(socket)
+  end
+
+  defp send_error_response(socket) do
+    response = "HTTP/1.1 400 Bad Request\r\n\r\n"
+    :gen_tcp.send(socket, response)
     :gen_tcp.close(socket)
   end
 end
+

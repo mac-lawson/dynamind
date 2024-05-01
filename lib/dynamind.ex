@@ -3,12 +3,13 @@ defmodule Dynamind do
   Documentation for `Dynamind`.
   """
   require Logger
-
-@spec init() :: :ok
-def init() do
+  @spec init() :: :ok
+  def init() do
     Logger.info("Dynamind starting up")
+    Logger.warning("Initializing Databases...")
     Db.Management.db_init()
-    Db.Management.db_init(SampleModels.Tensor)
+    Logger.warning("Reading from config file... (config.dynm)")
     Tasking.intake()
-end
+    Logger.info("Opening configuration file")
+  end
 end

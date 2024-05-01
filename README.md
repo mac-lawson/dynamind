@@ -5,7 +5,7 @@
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/mac-lawson/dynamind/elixir.yml)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/mac-lawson/dynamind)
 ![Hex.pm Version](https://img.shields.io/hexpm/v/axon)
-[TODO Chart](docs/TODO.md)
+[TODO and Contributing Guide](dev.md)
 
 -------------------
 This project aims to develop a distributed cognitive agent system using Elixir, capable of dynamic resource allocation in complex environments.
@@ -20,7 +20,7 @@ Dynamind uses Erlang and Elixir to empower distributed computing for machine lea
 3. Navigate to the project directory and run `mix deps.get` to install dependencies.
 4. Run `mix run -e "Dynamind.init()"`
 
-### Setup your NODES
+### Staging your MODULES and NODES for production.
 1. Open the `config.dynm`
 2. Add your nodes under the 'nodes key' & your modules under the 'modules key'. 
 
@@ -33,7 +33,7 @@ SampleModels.tensor
 
 ```
 
-### Add your MODULES
+### Prepare your MODULES
 #### Elixir MODULES
 ##### Prepare your module for upload
 1. Ensure your module returns the proper work requirement. 

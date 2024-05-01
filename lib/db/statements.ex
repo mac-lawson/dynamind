@@ -48,7 +48,8 @@ defmodule Db.Statements do
     Exqlite.Sqlite3.prepare(conn, "SELECT * FROM #{module_name} WHERE function_name = ?1;")
   end
 
-  def pull_table_query(table_name) do
+  # TODO
+  def pull_table_query(_table_name) do
     "SELECT name FROM sqlite_master WHERE type='table';"
   end
 end

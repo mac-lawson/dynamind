@@ -54,6 +54,17 @@ defmodule Db.Utils do
   end
 
   @doc """
+  Dosen't work, something wrong with the map. 
+  """
+  def pull_all_module_data(conn) do
+    {:done, modules} = pull_all_modules(conn)
+
+    Enum.map(modules, fn {_, module_name} ->
+      get_module_functions(conn, module_name)
+    end)
+  end
+
+  @doc """
   Updates the uptime for a specific host.
   """
   @spec update_uptime(reference(), any(), any()) :: :done

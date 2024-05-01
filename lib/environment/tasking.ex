@@ -7,7 +7,6 @@ defmodule Tasking do
   # import EnvironmentUtils
   import Db.Management
   import Db.Utils
-  import SampleModels.Tensor
   import Logger
   # defines acceptable work levels, final return value of every function that is processed.
   @type work_specs :: :one | :two | :three | :four | :five
@@ -17,6 +16,12 @@ defmodule Tasking do
     %{:one => 1, :two => 2, :three => 3, :four => 4, :five => 5}
   end
 
+  @doc """
+  *Known issue*: Isn't converting the module names from config file to atoms properly.
+
+  **TODO**
+  - Allow user to object to module being procesed. 
+  """
   def intake do
     info("Intake running, trying to connecting to database")
 
@@ -27,6 +32,13 @@ defmodule Tasking do
       for remote_host <- Utils.ConfigFileToArray.read_nodes_from_config("config.dynm") do
         warning("Host added to schema: #{remote_host}")
         insert(conn, remote_host, 0, 0)
+      end
+
+      for module <- Utils.ConfigFileToArray.read_modules_from_config("config.dynm") do
+        warning("Module added to schema: #{module}")
+        # strip the string here
+        module |> IO.inspect()
+        # full_process(module)
       end
     rescue
       e in Exqlite.Sqlite3.Error ->
@@ -54,6 +66,15 @@ defmodule Tasking do
     work_requirements =
       Enum.reduce(pub_fns, work_requirements, fn {function, arity}, acc ->
         IO.puts("Processing function #{function} with arity #{arity}")
+
+        if arity > 0 do
+          error("Function #{function} has an arity of GREATER than zero. Program will fail.")
+
+          error(
+            "Please use process_module_silent() to process modules with an arity of greater than zero."
+          )
+        end
+
         t = Function.capture(module, function, arity)
         tval = t.()
 
@@ -99,6 +120,7 @@ defmodule Tasking do
   end
 
   @doc """
+  **Use this for processing modules**
   *Full Process*
   The full process function takes a module and processes it, then inserts the data into the database.
 
@@ -107,6 +129,7 @@ defmodule Tasking do
   """
   def full_process(module) do
     work_requirements = process_module(module)
+    db_init(module)
     insert_module_data(work_requirements, to_string(module))
   end
 
