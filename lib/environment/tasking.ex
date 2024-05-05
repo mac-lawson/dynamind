@@ -56,37 +56,14 @@ defmodule Tasking do
     update_uptime(conn, "test@testhost.org", 100)
   end
 
-  # TODO
-  # Run functions that have an arity of >0 properly
   @spec process_module(module :: module()) :: map()
+  @doc """
+  Migration in progress to Environment.Process
+
+  *All function calls related to module processing will soon be movedd*
+  """
   def process_module(module) do
-    work_requirements = %{}
-    pub_fns = module.__info__(:functions)
-
-    work_requirements =
-      Enum.reduce(pub_fns, work_requirements, fn {function, arity}, acc ->
-        IO.puts("Processing function #{function} with arity #{arity}")
-
-        if arity > 0 do
-          error("Function #{function} has an arity of GREATER than zero. Program will fail.")
-
-          error(
-            "Please use process_module_silent() to process modules with an arity of greater than zero."
-          )
-        end
-
-        t = Function.capture(module, function, arity)
-        tval = t.()
-
-        if is_tuple(tval) do
-          work_req = List.last(Tuple.to_list(tval))
-          Map.put(acc, function, Map.fetch(tasking_reqs(), work_req))
-        else
-          Map.put(acc, function, tval)
-        end
-      end)
-
-    work_requirements
+    Environment.Process.process_module(module)
   end
 
   @spec process_module_test(module :: module()) :: map()
