@@ -38,7 +38,7 @@ defmodule Tasking do
         warning("Module added to schema: #{module}")
         # strip the string here
         module |> IO.inspect()
-        # full_process(module)
+        full_process(module)
       end
     rescue
       e in Exqlite.Sqlite3.Error ->
@@ -113,12 +113,5 @@ defmodule Tasking do
   @spec multi_full_process(list()) :: list()
   def multi_full_process(modules) do
     Enum.map(modules, &full_process/1)
-  end
-
-  # TODO
-  # Get stored functions from Func DB and nodes from Node DB and compare work_reqs and staging to begin creating an execution map. 
-  def pair_function_modules() do
-    # {:ok, nodes_conn} = db_connect(1)
-    # {:ok, func_conn} = db_connect(2)
   end
 end

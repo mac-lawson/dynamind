@@ -35,6 +35,26 @@ defmodule Db.Utils do
 
   @doc """
   Pulls all rows from the hosts table.
+  Sample return:
+  {:done,
+  [
+   ["one@localhost", "0", 0, "ignored", "pang"],
+   ["one@localhost", "0", 0, "ignored", "pang"],
+   ["one@localhost", "0", 0, "ignored", "pang"],
+   ["one@localhost", "0", 0, "ignored", "pang"],
+   ["one@localhost", "0", 0, "ignored", "pang"],
+   ["one@localhost", "0", 0, "ignored", "pang"],
+   ["one@localhost", "0", 0, "ignored", "pang"],
+   ["one@localhost", "0", 0, "ignored", "pang"],
+   ["one@localhost", "0", 0, "ignored", "pang"],
+   ["one@localhost", "0", 0, "ignored", "pang"],
+   ["one@localhost", "0", 0, "ignored", "pang"],
+   ["one@localhost", "0", 0, "ignored", "pang"],
+   ["one@localhost", "0", 0, "ignored", "pang"],
+   ["one@localhost", "0", 0, "ignored", "pang"],
+   ["one@localhost", "0", 0, "ignored", "pang"]
+  ]}
+
   """
   @spec pull_all(reference()) :: :busy | :done | {:error, atom() | binary()} | {:row, list()}
   def pull_all(conn) do
@@ -59,8 +79,10 @@ defmodule Db.Utils do
   def pull_all_module_data(conn) do
     {:done, modules} = pull_all_modules(conn)
 
+    # issue with the Enumeration. Something with an anonymous function and passing through the module name as a list. 
     Enum.map(modules, fn {_, module_name} ->
-      get_module_functions(conn, module_name)
+      IO.inspect(module_name)
+      # get_module_functions(conn, module_name)
     end)
   end
 
