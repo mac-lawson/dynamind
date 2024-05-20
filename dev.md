@@ -13,6 +13,7 @@
 | User Process Objection | env/tasking | Some sort of system in the config or during processing to allow user to mark/object to a method in a module to being ran. |
 | TCP Client | agent | A lot. TCP client and server for managing sending data on non-Elixir programs |
 | Database Viewer | utils | Finish the ASCII tables and finalize the getter functions. |
+| Non-Elixir File Processing **MAJOR** | import directory | This is a two part problem: 1, develop a solution to process what functions ARE inside of the non-elixir modules. 2, figure out a way to convert these over too something that can be run in Elixir.  |
 
 
 

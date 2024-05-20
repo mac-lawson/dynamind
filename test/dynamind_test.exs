@@ -24,6 +24,6 @@ defmodule DynamindTest do
   test "Clear database before commit" do
     {:ok, conn_1} = db_connect(1)
     {:ok, conn_2} = db_connect(2)
-    assert (db_clear(conn_1, 1) == :ok) && (db_clear(conn_2, 2) == :ok)
+    assert db_clear(conn_1, 1) == :ok && db_clear(conn_2, 2) == :ok
   end
 end
