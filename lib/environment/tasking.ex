@@ -17,7 +17,7 @@ defmodule Tasking do
   end
 
   @doc """
-  *Known issue*: Isn't converting the module names from config file to atoms properly.
+  Urgent *Known issue*: Isn't converting the module names from config file to atoms properly.
 
   **TODO**
   - Allow user to object to module being procesed. 
