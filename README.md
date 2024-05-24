@@ -18,7 +18,6 @@ Dynamind uses Erlang and Elixir to empower distributed computing for machine lea
 1. Clone this repository.
 2. Install Elixir and Mix if not already installed.
 3. Navigate to the project directory and run `mix deps.get` to install dependencies.
-4. Run `mix run -e "Dynamind.init()"`
 
 ### Staging your MODULES and NODES for production.
 1. Open the `config.dynm`

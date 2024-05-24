@@ -14,7 +14,11 @@ defmodule Dynamind do
     Logger.warning("Initializing Databases...")
     Db.Management.db_init()
     Logger.warning("Reading from config file... (config.dynm)")
-    Tasking.intake()
+    # Tasking.intake()
+    Logger.warning(
+      "\n\n\t\tDynamind is currently still in development and the init module has not been fully implemented."
+    )
+
     Logger.info("Opening configuration file")
   end
 

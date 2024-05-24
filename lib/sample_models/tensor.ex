@@ -1,4 +1,7 @@
 defmodule SampleModels.Tensor do
+  @moduledoc """
+  This module is key to a few tests. Do not modify it.
+  """
   @spec make_a_tensor() :: {any(), any(), Tasking.work_specs()}
   def make_a_tensor do
     t = Nx.tensor([[1, 2], [3, 4]])
@@ -8,12 +11,11 @@ defmodule SampleModels.Tensor do
 
   @spec model_creation() :: {Axon.model(), Tasking.work_specs()}
   def model_creation() do
-    workspec = true
-
-    if EnvironmentUtils.is_workspec(workspec) do
+    t =
       {Axon.input("input", shape: {nil, 784})
        |> Axon.dense(128)
-       |> Axon.dense(11, activation: :softmax), :two}
-    end
+       |> Axon.dense(11, activation: :softmax)}
+
+    {t, :one}
   end
 end

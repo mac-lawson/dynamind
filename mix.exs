@@ -32,7 +32,8 @@ defmodule Dynamind.MixProject do
       {:exqlite, "~> 0.17"},
       # Exla is a wrapper around the Google TensorFlow C API
       {:exla, "~> 0.7.1"},
-      {:luerl, "~> 1.2"}
+      {:luerl, "~> 1.2"},
+      {:mox, "~> 1.0", only: :test}
     ]
   end
 end

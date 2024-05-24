@@ -6,8 +6,12 @@ defmodule DynamindTest do
   doctest Db.Statements
 
   """
-  Environment Module Tests
+  Dev Tests
   """
+
+  test "SampleModels.Tensor is unchanged" do
+    assert File.read!("lib/sample_models/tensor.ex") == File.read!("lib/sample_models/tensor.txt")
+  end
 
   """
   Database tests

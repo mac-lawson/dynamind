@@ -14,9 +14,24 @@
 | TCP Client | agent | A lot. TCP client and server for managing sending data on non-Elixir programs |
 | Database Viewer | utils | Finish the ASCII tables and finalize the getter functions. |
 | Non-Elixir File Processing **MAJOR** | import directory | This is a two part problem: 1, develop a solution to process what functions ARE inside of the non-elixir modules. 2, figure out a way to convert these over too something that can be run in Elixir.  |
+| File Distribution System* | new module - dfs (distributed file system) | Seperates files and stores them across nodes |
 
 
+### Non-Technical Tasks
+| ID/Title   | Scope/Module    |
+|--------------- | --------------- |
+| 1. Documentation   | Every module, one MD file per library folder.   |
 
+#### Documentation Status
+
+| Module | Status |
+| -------------- | --------------- |
+| [Environment](lib/environment) | Nothing |
+| [Database](lib/db) | Nothing |
+| [Utils](lib/utils) | Nothing |
+
+
+* This might end up being a seperate project/repository.
 
 #### TCP Client
 
