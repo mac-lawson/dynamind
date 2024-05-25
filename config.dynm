@@ -1,6 +1,5 @@
 - nodes
 one@localhost
 
-- modules
-SampleModels.Tensor
-SampleModels.Tensor2
+- projdir
+lib/test123/*.ex

@@ -26,20 +26,22 @@ defmodule Tasking do
     info("Intake running, trying to connecting to database")
 
     try do
-      {:ok, conn} = db_connect(1)
+      {:ok, conn1} = db_connect(1)
+
       info("Connected to database")
 
       for remote_host <- Utils.ConfigFileToArray.read_nodes_from_config("config.dynm") do
         warning("Host added to schema: #{remote_host}")
-        insert(conn, remote_host, 0, 0)
+        insert(conn1, remote_host, 0, 0)
       end
 
-      for module <- Utils.ConfigFileToArray.read_modules_from_config("config.dynm") do
-        warning("Module added to schema: #{module}")
-        # strip the string here
-        module |> IO.inspect()
-        full_process(module)
-      end
+      paths =
+        Utils.ConfigFileToArray.read_dir_from_config("config.dynm")
+        |> Path.wildcard()
+
+      info("#{length(paths)} modules found in config file.")
+
+      # implement database storage of found files here
     rescue
       e in Exqlite.Sqlite3.Error ->
         warning("Error connecting to database: #{inspect(e)}")
