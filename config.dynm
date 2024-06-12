@@ -2,4 +2,4 @@
 one@localhost
 
 - projdir
-lib/test123/*.ex
+lib/sample_models/*.ex

@@ -14,8 +14,6 @@ defmodule Dynamind do
   require OptionParser
   @spec init() :: :ok
   def init() do
-    Utils.Ascii.main_header("DYNAMIND")
-    Logger.info("Dynamind starting up")
     Logger.warning("Initializing Databases...")
     Db.Management.db_init()
     Logger.warning("Reading from config file... (config.dynm)")

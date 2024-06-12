@@ -16,6 +16,7 @@
 | Non-Elixir File Processing **MAJOR** | import directory | This is a two part problem: 1, develop a solution to process what functions ARE inside of the non-elixir modules. 2, figure out a way to convert these over too something that can be run in Elixir.  |
 | File Distribution System* | new module - dfs (distributed file system) | Seperates files and stores them across nodes |
 | Dynamind.init startup sequence | Dynamind.init | Pull together the required functionality to get Dynamind up and running. |
+| Turso Port-over | db | Add turso support for Database. |
 
 
 ### Non-Technical Tasks

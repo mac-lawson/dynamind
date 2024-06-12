@@ -30,6 +30,22 @@ defmodule Environment.Process do
         end
       end)
 
+    "here" |> IO.puts()
     work_requirements
+    work_requirements |> IO.inspect()
+  end
+
+  @doc """
+  **Use this for processing modules**
+  *Full Process*
+  The full process function takes a module and processes it, then inserts the data into the database.
+
+  *Known issues*
+  - Can not process modules that have functions with an arity of >0.
+  """
+  def full_process(module) do
+    work_requirements = process_module(module)
+    Db.Management.db_init(module)
+    Db.Utils.insert_module_data(work_requirements, to_string(module))
   end
 end

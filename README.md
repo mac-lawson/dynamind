@@ -19,21 +19,21 @@ Dynamind uses Erlang and Elixir to empower distributed computing for machine lea
 2. Install Elixir and Mix if not already installed.
 3. Navigate to the project directory and run `mix deps.get` to install dependencies.
 
-### Staging your MODULES and NODES for production.
+### Staging your project directories and nodes for production.
 1. Open the `config.dynm`
-2. Add your nodes under the 'nodes key' & your modules under the 'modules key'. 
+2. Add your nodes under the 'nodes key' & any directories containing files under the 'projdir key'. 
 
 ```yaml
 - nodes
 one@localhost
 
-- modules
-SampleModels.tensor
+- projdir
+lib/sample_models/*.ex
+
 
 ```
 
-### Prepare your MODULES
-#### Elixir MODULES
+### Preparing Elixir Modules
 ##### Prepare your module for upload
 1. Ensure your module returns the proper work requirement. 
 The Dynamind work requirement is a user-defined atom that **must** be returned by every function in your module. We do not calculate the computational requirements of the functions in your module, therefore you must provide this information. Work requirements are extremely subjective based on the scale of your project and the importance of the module you are uploading.
@@ -72,6 +72,25 @@ I've written/working on writing a few sample LLMs for your edification in the [s
 
 Dynamind works great with Lua, due to the ease of use with the [luerl](github.com/rvirding/luerl) library. Because of this, I'm currently trying to port GPT-2 to Lua. You can view the progress or contribute to [llm.lua](/lib/sample_models/llm.lua) in the sample_models directory.
 
+## Database
+### Local Sqlite3
+
+### Turso Setup
+
+**Use the Turso CLI to get the following information about your instance**
+`turso db show <db-name> --http-url` (and add /v2/pipeline)
+
+`turso db tokens create <db-name>`
+
+**Add the following environment variables into your system:**
+
+- `TURSO_DB_HOST`
+- `TURSO_DB_TOKEN`
+
+You can do this by executing (for each variable):
+```bash
+export VAR_NAME="value"
+```
 
 ## Usage
 TODO: Add usage instructions once the system is developed.

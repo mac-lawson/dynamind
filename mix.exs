@@ -7,8 +7,13 @@ defmodule Dynamind.MixProject do
       version: "0.1.0",
       elixir: "~> 1.15",
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      deps: deps(),
+      escript: escript()
     ]
+  end
+
+  defp escript do
+    [main_module: Dynamind.Startup]
   end
 
   # Run "mix help compile.app" to learn about applications.
@@ -33,6 +38,7 @@ defmodule Dynamind.MixProject do
       # Exla is a wrapper around the Google TensorFlow C API
       {:exla, "~> 0.7.1"},
       {:luerl, "~> 1.2"},
+      {:httpoison, "~> 1.8"},
       {:mox, "~> 1.0", only: :test}
     ]
   end

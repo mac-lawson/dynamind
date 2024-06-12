@@ -33,13 +33,36 @@ defmodule Tasking do
       for remote_host <- Utils.ConfigFileToArray.read_nodes_from_config("config.dynm") do
         warning("Host added to schema: #{remote_host}")
         insert(conn1, remote_host, 0, 0)
+
+        Db.Turso.Insert.DatabaseInsert.insert_node(
+          0,
+          100,
+          1,
+          remote_host,
+          String.to_atom(remote_host) |> Node.ping()
+        )
+
+        "error here" |> IO.puts()
       end
 
       paths =
         Utils.ConfigFileToArray.read_dir_from_config("config.dynm")
         |> Path.wildcard()
 
-      info("#{length(paths)} modules found in config file.")
+      paths |> IO.inspect()
+
+      for path <- paths do
+        path |> IO.inspect()
+        Environment.Modfinder.get_modules(path) |> IO.inspect()
+        Enum.each(Environment.Modfinder.get_modules(path), &full_process/1)
+        # Environment.Process.process_module(Environment.Modfinder.get_modules(path))
+      end
+
+      #     Utils.ConfigFileToArray.read_dir_from_config("config.dynm")
+      # |> Path.wildcard()
+      # |> Environment.Modfinder.get_modules()
+
+      info("#{length(paths)} module directories found in config file.")
 
       # implement database storage of found files here
     rescue

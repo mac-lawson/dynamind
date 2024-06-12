@@ -23,7 +23,6 @@ Application.put_env(:nx, :default_backend, EXLA.Backend)
 
 defmodule PhoenixDemo.Layouts do
   use Phoenix.Component
-
   def render("live.html", assigns) do
     ~H"""
     <script src="https://cdn.jsdelivr.net/npm/phoenix@1.7.10/priv/static/phoenix.min.js">

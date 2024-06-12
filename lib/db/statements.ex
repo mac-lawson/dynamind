@@ -11,6 +11,10 @@ defmodule Db.Statements do
     {:ok, statement}
   end
 
+  def insert_query() do
+    @insert_query
+  end
+
   @spec get_node_statement(reference()) :: {:ok, reference()}
   def get_node_statement(conn) do
     Exqlite.Sqlite3.prepare(conn, @pull_query)
