@@ -73,23 +73,10 @@ I've written/working on writing a few sample LLMs for your edification in the [s
 Dynamind works great with Lua, due to the ease of use with the [luerl](github.com/rvirding/luerl) library. Because of this, I'm currently trying to port GPT-2 to Lua. You can view the progress or contribute to [llm.lua](/lib/sample_models/llm.lua) in the sample_models directory.
 
 ## Database
-### Local Sqlite3
+### Sqlite
+Dynamind uses local Sqlite databases to manage your instance's data. 
 
-### Turso Setup
 
-**Use the Turso CLI to get the following information about your instance**
-`turso db show <db-name> --http-url` (and add /v2/pipeline)
-
-`turso db tokens create <db-name>`
-
-**Add the following environment variables into your system:**
-
-- `TURSO_DB_HOST`
-- `TURSO_DB_TOKEN`
-
-You can do this by executing (for each variable):
-```bash
-export VAR_NAME="value"
 ```
 
 ## Usage

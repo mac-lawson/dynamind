@@ -34,14 +34,6 @@ defmodule Tasking do
         warning("Host added to schema: #{remote_host}")
         insert(conn1, remote_host, 0, 0)
 
-        Db.Turso.Insert.DatabaseInsert.insert_node(
-          0,
-          100,
-          1,
-          remote_host,
-          String.to_atom(remote_host) |> Node.ping()
-        )
-
         "error here" |> IO.puts()
       end
 

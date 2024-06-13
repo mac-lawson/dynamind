@@ -1,0 +1,202 @@
+<h1>Db.Management Module Documentation</h1>
+
+<h2>Overview</h2>
+
+<p>The <code>Db.Management</code> module is responsible for managing the database operations including initialization, connection, and clearing of databases. It handles both node and function databases and provides utilities to work with them effectively.</p>
+
+<h2>Functions</h2>
+
+<h3>db_init/0</h3>
+
+<p>Initializes the standard node database.</p>
+
+<pre><code>@spec db_init() :: :ok
+</code></pre>
+
+<p><strong>Usage:</strong></p>
+
+<pre><code>Db.Management.db_init()
+</code></pre>
+
+<h3>db_init/1</h3>
+
+<p>Initializes the function database for a specific module. The table name is derived from the module name.</p>
+
+<pre><code>@spec db_init(module :: module()) :: :ok
+</code></pre>
+
+<p><strong>Parameters:</strong></p>
+
+<ul>
+<li><code>module</code> - The module for which the function database is being initialized.</li>
+</ul>
+
+<p><strong>Usage:</strong></p>
+
+<pre><code>Db.Management.db_init(MyModule)
+</code></pre>
+
+<h3>db_connect/1</h3>
+
+<p>Connects to the specified type of database.</p>
+
+<pre><code>@spec db_connect(integer()) :: {:ok, reference()} | {:error, reference()}
+</code></pre>
+
+<p><strong>Parameters:</strong></p>
+
+<ul>
+<li><code>type_of_db</code> - An integer specifying the type of database:
+<ul>
+<li><code>1</code> - Node database</li>
+<li><code>2</code> - Function database</li>
+</ul>
+</li>
+</ul>
+
+<p><strong>Usage:</strong></p>
+
+<pre><code>{:ok, conn} = Db.Management.db_connect(1)
+</code></pre>
+
+<h3>db_clear/2</h3>
+
+<p>Clears the specified type of database.</p>
+
+<pre><code>@spec db_clear(reference(), integer()) :: :ok
+</code></pre>
+
+<p><strong>Parameters:</strong></p>
+
+<ul>
+<li><code>conn</code> - The database connection reference.</li>
+<li><code>type_db</code> - An integer specifying the type of database:
+<ul>
+<li><code>1</code> - Node database</li>
+<li><code>2</code> - Function database</li>
+</ul>
+</li>
+</ul>
+
+<p><strong>Usage:</strong></p>
+
+<pre><code>Db.Management.db_clear(conn, 1)
+</code></pre>
+
+<h3>db_init_test/0</h3>
+
+<p>Initializes the test database.</p>
+
+<pre><code>@spec db_init_test() :: :ok
+</code></pre>
+
+<p><strong>Usage:</strong></p>
+
+<pre><code>Db.Management.db_init_test()
+</code></pre>
+
+<h2>Private Functions</h2>
+
+<h3>open_conn/1</h3>
+
+<p>Opens a connection to the specified database.</p>
+
+<pre><code>@spec open_conn(String.t()) :: {:ok, reference()} | {:error, reference()}
+</code></pre>
+
+<p><strong>Parameters:</strong></p>
+
+<ul>
+<li><code>db_name</code> - The name of the database to connect to.</li>
+</ul>
+
+<p><strong>Usage:</strong></p>
+
+<pre><code>{:ok, conn} = Db.Management.open_conn("my_database.db")
+</code></pre>
+
+<h3>node_db_std_setup/1</h3>
+
+<p>Sets up the standard schema for the node database.</p>
+
+<pre><code>defp node_db_std_setup(reference())
+</code></pre>
+
+<p><strong>Parameters:</strong></p>
+
+<ul>
+<li><code>conn</code> - The database connection reference.</li>
+</ul>
+
+<p><strong>Usage:</strong></p>
+
+<pre><code>Db.Management.node_db_std_setup(conn)
+</code></pre>
+
+<h3>function_db_std_setup/2</h3>
+
+<p>Sets up the standard schema for the function database for a given module.</p>
+
+<pre><code>@spec function_db_std_setup(reference(), module()) :: :ok
+</code></pre>
+
+<p><strong>Parameters:</strong></p>
+
+<ul>
+<li><code>conn</code> - The database connection reference.</li>
+<li><code>module</code> - The module for which the function database is being set up.</li>
+</ul>
+
+<p><strong>Usage:</strong></p>
+
+<pre><code>Db.Management.function_db_std_setup(conn, MyModule)
+</code></pre>
+
+<h3>clear_db/2</h3>
+
+<p>Clears the specified type of database.</p>
+
+<pre><code>defp clear_db(reference(), integer())
+</code></pre>
+
+<p><strong>Parameters:</strong></p>
+
+<ul>
+<li><code>conn</code> - The database connection reference.</li>
+<li><code>type_db</code> - An integer specifying the type of database:
+<ul>
+<li><code>1</code> - Node database</li>
+<li><code>2</code> - Function database</li>
+</ul>
+</li>
+</ul>
+
+<p><strong>Usage:</strong></p>
+
+<pre><code>Db.Management.clear_db(conn, 1)
+</code></pre>
+
+<h2>Example Usage</h2>
+
+<pre><code><span class="hljs-comment"># Initialize the node database</span>
+Db.Management.db_init()
+
+<span class="hljs-comment"># Initialize the function database for a module</span>
+Db.Management.db_init(MyModule)
+
+<span class="hljs-comment"># Connect to the node database</span>
+{:ok, conn} = Db.Management.db_connect(1)
+
+<span class="hljs-comment"># Connect to the function database</span>
+{:ok, conn} = Db.Management.db_connect(2)
+
+<span class="hljs-comment"># Clear the node database</span>
+Db.Management.db_clear(conn, 1)
+
+<span class="hljs-comment"># Clear the function database</span>
+Db.Management.db_clear(conn, 2)
+
+<span class="hljs-comment"># Initialize the test database</span>
+Db.Management.db_init_test()
+</code></pre>
+
