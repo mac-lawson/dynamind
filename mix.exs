@@ -29,7 +29,6 @@ defmodule Dynamind.MixProject do
       {:bumblebee, "~> 0.5.3"},
       {:plug_cowboy, "~> 2.6"},
       {:jason, "~> 1.4"},
-      {:phoenix, "1.7.10"},
       {:phoenix_live_view, "0.20.1"},
       # Bumblebee and friends
       {:nx, "~> 0.7.0"},
