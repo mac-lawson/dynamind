@@ -134,4 +134,44 @@ defmodule DynamindTensor do
     defp to_algebra(shape, names, open, close),
       do: concat([open, Enum.join(Tuple.to_list(shape), ", "), close])
   end
+
+  def tensor(data) do
+    shape = infer_shape(data)
+    type = infer_type(data)
+    names = Enum.map(0..(tuple_size(shape) - 1), &:"axis#{&1}")
+
+    %DynamindTensor{
+      data: data,
+      type: type,
+      shape: shape,
+      names: names
+    }
+  end
+
+  defp infer_shape(list) when is_list(list) do
+    [head | _] = list
+
+    {length(list), infer_shape(head)}
+    |> Tuple.flatten()
+  end
+
+  defp infer_shape(_), do: {}
+
+  defp infer_type(list) when is_list(list) do
+    [head | _] = list
+    infer_type(head)
+  end
+
+  # Helper function to get the type of a value
+  defp typeof(value) do
+    case value do
+      _ when is_integer(value) -> :integer
+      _ when is_float(value) -> :float
+      _ when is_binary(value) -> :binary
+      _ when is_atom(value) -> :atom
+      _ when is_list(value) -> :list
+      _ -> :unknown
+    end
+  end
 end
+
