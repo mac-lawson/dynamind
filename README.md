@@ -77,8 +77,6 @@ Dynamind works great with Lua, due to the ease of use with the [luerl](github.co
 Dynamind uses local Sqlite databases to manage your instance's data. 
 
 
-```
-
 ## Usage
 TODO: Add usage instructions once the system is developed.
 

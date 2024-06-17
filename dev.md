@@ -4,35 +4,10 @@
 
 ### Tasks
 
-*These are in order by relative importance.*
-
-| Title | Module(s) Involved | Work Required |
-| --------------- | --------------- | --------------- |
-| **Module-Function Pairing** | env/tasking | Function to map functions and nodes from both DBs |
-| **Module-Function Execution** | env/tasking | Might need to a new sub-folder to be created. Once pairing is completed, do the actual work. |
-| User Process Objection | env/tasking | Some sort of system in the config or during processing to allow user to mark/object to a method in a module to being ran. |
-| Database Viewer | utils | Finish the ASCII tables and finalize the getter functions. |
-| Non-Elixir File Processing **MAJOR** | import directory | This is a two part problem: 1, develop a solution to process what functions ARE inside of the non-elixir modules. 2, figure out a way to convert these over too something that can be run in Elixir.  |
-| File Distribution System* | new module - dfs (distributed file system) | Seperates files and stores them across nodes |
-| Dynamind.init startup sequence | Dynamind.init | Pull together the required functionality to get Dynamind up and running. |
+Refer to [GitHub issues](https://github.com/mac-lawson/dynamind/issues) for the most up-to-date list of tasks.
 
 
-### Non-Technical Tasks
-| ID/Title   | Scope/Module    |
-|--------------- | --------------- |
-| 1. Documentation   | Every module, one MD file per library folder.   |
-
-#### Documentation Status
-
-| Module | Status |
-| -------------- | --------------- |
-| [Environment](lib/environment) | Nothing |
-| [Database](lib/db) | Nothing |
-| [Utils](lib/utils) | Nothing |
-
-
-* This might end up being a seperate project/repository.
-
+### 1.1 Overview
 
 
 
