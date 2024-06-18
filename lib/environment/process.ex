@@ -4,6 +4,7 @@ defmodule Environment.Process do
     The Environment.Process module is responsible for processing modules.
     TODO: import everything else that involves function processing from env.tasking
   """
+  require Logger
   @spec tasking_reqs() :: map()
   defp tasking_reqs do
     %{:one => 1, :two => 2, :three => 3, :four => 4, :five => 5}
@@ -16,8 +17,8 @@ defmodule Environment.Process do
     work_requirements = %{}
     pub_fns = module.__info__(:functions)
 
-    work_requirements =
-      Enum.reduce(pub_fns, work_requirements, fn {function, arity}, acc ->
+    Enum.reduce(pub_fns, work_requirements, fn {function, arity}, acc ->
+      if arity_check(arity) do
         IO.puts("Processing function #{function} with arity #{arity}")
         t = Function.capture(module, function, arity)
         tval = t.()
@@ -28,11 +29,10 @@ defmodule Environment.Process do
         else
           Map.put(acc, function, tval)
         end
-      end)
-
-    "here" |> IO.puts()
-    work_requirements
-    work_requirements |> IO.inspect()
+      else
+        Logger.error("Cannot process #{function} because is has a non-zero arity.")
+      end
+    end)
   end
 
   @doc """
@@ -47,5 +47,10 @@ defmodule Environment.Process do
     work_requirements = process_module(module)
     Db.Management.db_init(module)
     Db.Utils.insert_module_data(work_requirements, to_string(module))
+  end
+
+  @spec arity_check(integer) :: boolean
+  defp arity_check(arity) do
+    arity == 0
   end
 end

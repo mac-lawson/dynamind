@@ -1,5 +1,8 @@
-- nodes
+-nodes
 one@localhost
 
-- projdir
+-projdir
 lib/sample_models/*.ex
+
+-instdir
+~/Documents/dynamind/

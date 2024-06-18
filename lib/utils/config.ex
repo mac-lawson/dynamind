@@ -12,15 +12,27 @@ defmodule Utils.ConfigFileToArray do
 
   defp extract_nodes(contents) do
     contents
-    |> Enum.drop_while(&(&1 != "- nodes"))
-    |> Enum.take_while(&(&1 != "- projdir"))
+    |> Enum.drop_while(&(&1 != "-nodes"))
+    # Skip the "- nodes" line
+    |> Enum.drop(1)
+    |> Enum.take_while(&(&1 != "-projdir"))
     |> Enum.filter(fn line -> String.match?(line, ~r/^\w+@\w+/) end)
   end
 
-  defp extract_modules(contents) do
+  defp extract_projdir(contents) do
     contents
-    |> Enum.drop_while(&(&1 != "- projdir"))
-    |> tl()
+    |> Enum.drop_while(&(&1 != "-projdir"))
+    # Skip the "- projdir" line
+    |> Enum.drop(1)
+    |> Enum.take_while(&(&1 != "-instdir"))
+  end
+
+  defp extract_instdir(contents) do
+    contents
+    |> Enum.drop_while(&(&1 != "-instdir"))
+
+    # Skip the "- instdir" line
+    |> Enum.drop(1)
   end
 
   @doc """
@@ -32,18 +44,19 @@ defmodule Utils.ConfigFileToArray do
   end
 
   @doc """
-  Reads modules from a non-default config file and returns a list containing each module.
+  Reads project directory modules from a non-default config file and returns a list containing each module.
   """
-  def read_modules_from_config(file_path) do
+  def read_projdir_from_config(file_path) do
     file_contents = read_lines(file_path)
-    extract_modules(file_contents)
+    extract_projdir(file_contents)
   end
 
   @doc """
-  Reads modules from a non-default config file and returns a list containing each module.
+  Reads installation directory from a non-default config file and returns a list containing each directory.
   """
-  def read_dir_from_config(file_path) do
+  def read_instdir_from_config(file_path) do
     file_contents = read_lines(file_path)
-    extract_modules(file_contents)
+    extract_instdir(file_contents)
   end
 end
+

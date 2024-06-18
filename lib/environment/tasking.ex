@@ -33,12 +33,10 @@ defmodule Tasking do
       for remote_host <- Utils.ConfigFileToArray.read_nodes_from_config("config.dynm") do
         warning("Host added to schema: #{remote_host}")
         insert(conn1, remote_host, 0, 0)
-
-        "error here" |> IO.puts()
       end
 
       paths =
-        Utils.ConfigFileToArray.read_dir_from_config("config.dynm")
+        Utils.ConfigFileToArray.read_projdir_from_config("config.dynm")
         |> Path.wildcard()
 
       paths |> IO.inspect()
@@ -54,7 +52,7 @@ defmodule Tasking do
       # |> Path.wildcard()
       # |> Environment.Modfinder.get_modules()
 
-      info("#{length(paths)} module directories found in config file.")
+      info("#{length(paths)} module directories found in config file. Listing: #{paths}")
 
       # implement database storage of found files here
     rescue
